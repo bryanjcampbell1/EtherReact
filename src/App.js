@@ -7,55 +7,60 @@ import genKey from './generateKeys.png';
 import metaMask from './metamask.png';
 import win from './winningWallet.png';
 import impAcc from './importAccount.png';
+import claim from './claim.png';
 import Tools from './Tools';
 
 
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 
 var abiData = [
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getName",
-    "outputs": [
-      {
-        "name": "winnerName_",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "buyIn",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "yourName",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setName",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  }
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "allowRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "buyIn",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "payTo",
+				"type": "address"
+			}
+		],
+		"name": "payout",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "playerRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
 ];
 
 var ethVal = 100000000000000000;
@@ -66,7 +71,7 @@ var ethHex = '0x' + ethVal.toString(16);
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x65601fcf248988bb79e1358d77edcc649f7a548a";
+var contractAddress = "0xc69b962bdebc87b39eeaa8672884e9c053246295";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -74,38 +79,40 @@ simpleContract.options.address = contractAddress;
 class Example extends React.Component {
   render() {
     return (
-      <div style={{padding: "20px" }}>
+      <div style={{padding: "20px" }} >
         <h1>Example Quiz</h1>
+        <h3>Step 1: Download the Metamask Chrome Extension and Sign In.</h3>
+        <h5>Make sure to transfer Ether to your account</h5>
 
-        <h3>Step 1: Download the Metamask Chrome Extension and Sign In</h3>
-        <h6>Make sure to transfer Ether to your account</h6>
-        <Well className="text-center" style={{width: '95%', }}>
-          <img src={metaMask} alt="metaMask" style={{maxWidth: '20%'}}/>
+        <Well className="text-center" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+          <img src={metaMask} alt="metaMask"/>
         </Well>
 
           <h3>Step 2: Register for the Game </h3>
-          <h6>To register, navigate to the sart contract and send the Buy In Amount.</h6>
+          <h5>To register, click the "Buy In" button send the requested amount of Ether.</h5>
+          <h5>The account that you send Ether from will be the same account paid out to if you win.</h5>
 
-
-          <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-            <Well className="text-center" style={{width: '95%', }}>
-              <p>Status: Registration Active (Game Live!)</p>
+          <div>
+            <Well className="text-center">
+              <p>Status: Registration Active (Game Live at 12:30 pm)</p>
               <p>Buy In Amount: 0.01 ETH </p>
               <Button bsStyle="primary"> Buy In! </Button>
-              <p>Smart Contract Address: 0xfb35ad702e715e61a3f362c62da7c1bd235102fc </p>
-              <p>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
+              <p style={{color: "green" }}>Smart Contract Address: 0xc69b962bdebc87b39eeaa8672884e9c053246295 </p>
+              <p style={{color: "green" }}>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
             </Well>
         </div>
             <h3>Step 3: Solve the Puzzle </h3>
-            <h6>Puzzle description added when game goes live.  Rush to solve it first!</h6>
+            <h5>Puzzle description added when game goes live.  Rush to solve it first!</h5>
+            <h5>The winner will recieve 90% of all the Ether in the contract!</h5>
+            <h5>(If the game is live and you are the only one who has entered the game, you may withdraw your entry.)</h5>
 
-          <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-            <Well className="text-center" style={{width: '95%', }}>
+          <div>
+            <Well className="text-center" >
               <p>Status: Registration Active (Game Live!)</p>
               <p>Buy In Amount: 0.01 ETH </p>
               <Button bsStyle="primary"> Buy In! </Button>
-              <p>Smart Contract Address: 0xfb35ad702e715e61a3f362c62da7c1bd235102fc </p>
-              <p>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
+              <p style={{color: "green" }}>Smart Contract Address: 0xc69b962bdebc87b39eeaa8672884e9c053246295 </p>
+              <p style={{color: "green" }}>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
               <p>Assign the numbers 1 through 26 to the letters a through z </p>
               <p>Find 2 US Presidents who’s first name letters add to the same number </p>
               <p>Take those 2 first names and combine them </p>
@@ -116,27 +123,31 @@ class Example extends React.Component {
             </Well>
           </div>
             <h3>Solution</h3>
-            <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-              <Well className="text-center" style={{width: '95%', }}>
-            <h3>Grover = 7 + 18 + 15 + 22 + 5 + 18 = 85</h3>
-            <h3>Franklin = 6 + 18 + 1 + 14 + 11 + 12 + 9 + 14 = 85</h3>
-            <h3>govefankli</h3>
-            <h3>fanglike</h3>
+            <div>
+              <Well className="text-center" >
+                <h3>Grover = 7 + 18 + 15 + 22 + 5 + 18 = 85</h3>
+                <h3>Franklin = 6 + 18 + 1 + 14 + 11 + 12 + 9 + 14 = 85</h3>
+                <h3>govefankli</h3>
+                <h3>fanglike</h3>
               </Well>
             </div>
             <h3>Step 4: Get the Keys </h3>
-            <h6>Paste your solution into the text field on the Tools page to derive the public and private keys </h6>
-            <Well className="text-center" style={{width: '95%', }}>
+            <h5>Click on the "Claim Prize" tab at the top of the page</h5>
+            <h5>Paste your solution into the text field to derive the public and private keys </h5>
+            <Well style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
               <img src={genKey} alt="genKey" style={{maxWidth: '95%'}}/>
             </Well>
-            <h3>Step 3: Claim Your Ether! </h3>
-            <h6>Enter the Winning Wallet using the private key derived in Step 3</h6>
-            <img src={impAcc} alt="impAcc" style={{maxWidth: '50%'}}/>
-            <img src={win} alt="win" style={{maxWidth: '50%'}}/>
-            <h6>Call the contract function named payout and enter your personal wallet public addess so you can collect your prize!</h6>
-            <img src={logo} alt="logo" style={{maxWidth: '50%'}}/>
-            <h6>Make sure to use the same wallet address that you used when you registered for the game.</h6>
-            <h6>Funds will be distributed when the next block is mined. </h6>
+            <h3>Step 5: Claim Your Ether! </h3>
+            <h5>Enter the Winning Wallet by selecting "import account" and using the private key derived in Step 3 </h5>
+            <Well className="text-center" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+              <img src={impAcc} alt="impAcc" />
+            </Well>
+            <h5>Enter your payout address and click the "Claim Ether!" button. </h5>
+            <h5>Make sure to use the same wallet address that you used when you registered for the game.</h5>
+            <Well className="text-center" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+              <img src={claim} alt="claim" style={{maxWidth: '95%'}}/>
+            </Well>
+            <h5>Funds will be distributed when the next block is mined. </h5>
 
       </div>
     );
@@ -180,15 +191,15 @@ class QuizObject extends Component {
         <p>Status: Registration Active (Game Live!)</p>
         <p>Buy In Amount: 0.01 ETH </p>
         <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In! </Button>
-        <p>Smart Contract Address: 0xfb35ad702e715e61a3f362c62da7c1bd235102fc </p>
-        <p>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
+        <p style={{color: "green" }}>Smart Contract Address: 0xc69b962bdebc87b39eeaa8672884e9c053246295 </p>
+        <p style={{color: "green" }}>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
         <p>Assign the numbers 1 through 26 to the letters a through z </p>
         <p>Find 2 US Presidents who’s first name letters add to the same number </p>
         <p>Take those 2 first names and combine them </p>
         <p>Delete any letter which shows up more than once </p>
         <p>Scramble the remaining letters and use them to obtain a word that would receive the highest Scrabble score</p>
         <p>You do not need to use all the remaining letters</p>
-        <p>Use SHA(256) on this word to derive the private key of the wallet that unlocks this puzzle’s smart contract.</p>
+        <p>Use SHA3 on this word to derive the private key of the wallet that unlocks this puzzle’s smart contract.</p>
       </Well>
       </div>
 
@@ -278,7 +289,7 @@ class Navigation extends React.Component{
           <Nav onSelect={this.handleSelect.bind(this)}>
             <NavItem eventKey={1}>Home</NavItem>
             <NavItem eventKey={2}>Example</NavItem>
-            <NavItem eventKey={3}>Tools</NavItem>
+            <NavItem eventKey={3}>Claim Prize</NavItem>
             </Nav>
           </Navbar.Collapse>
         </Navbar>

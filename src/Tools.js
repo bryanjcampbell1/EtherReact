@@ -9,49 +9,53 @@ const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 var $ = require('jquery');
 
 var abiData = [
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getName",
-    "outputs": [
-      {
-        "name": "winnerName_",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "buyIn",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "yourName",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setName",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  }
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "allowRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "buyIn",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "payTo",
+				"type": "address"
+			}
+		],
+		"name": "payout",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "playerRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	}
 ];
 
 
@@ -61,7 +65,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x65601fcf248988bb79e1358d77edcc649f7a548a";
+var contractAddress = "0xc69b962bdebc87b39eeaa8672884e9c053246295";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -91,10 +95,20 @@ class Tools extends Component {
 
 
     handleChange(e) {
-      this.setState({ value: e.target.value,
-                      private: web3.utils.sha3(e.target.value).substr(2),
-                      public: privateKeyToAddress(web3.utils.sha3(e.target.value).substr(2))
+      if (e.target.value != ""){
+      this.setState({
+                        value: e.target.value,
+                        private: web3.utils.sha3(e.target.value).substr(2),
+                        public: privateKeyToAddress(web3.utils.sha3(e.target.value).substr(2))
+                  });
+      }
+      else{
+        this.setState({
+          value: '',
+          private: '',
+          public: ''
                     });
+      }
     }
     handleClick(e) {
       var textValue = this.textInput.value;
@@ -104,7 +118,7 @@ class Tools extends Component {
           if(error != null)
               console.log("Couldnt get accounts");
 
-         simpleContract.methods.setName(textBytes).send({from: result[0]}, function(error, result){
+         simpleContract.methods.payout(textBytes).send({from: result[0]}, function(error, result){
                                  if(!error)
                                      console.log(JSON.stringify(result));
                                  else
@@ -120,7 +134,7 @@ class Tools extends Component {
 
       <div className="Tools" style={{padding: "20px" }}>
           <h1>Wallet address generator</h1>
-          <h6>Enter puzzle answer below. Private key will be generated using sha256. Wallet address will be generated from private key. </h6>
+          <h5>Enter puzzle answer below. Private key will be generated using the SHA3 hash. Wallet address will be generated from private key. </h5>
           <form>
             <FormGroup controlId="formBasicText">
               <FormControl type="text" onChange={this.handleChange}/>
