@@ -99,7 +99,8 @@ class Tools extends Component {
       this.setState({
                         value: e.target.value,
                         private: web3.utils.sha3(e.target.value).substr(2),
-                        public: privateKeyToAddress(web3.utils.sha3(e.target.value).substr(2))
+                        public: web3.utils.toChecksumAddress(privateKeyToAddress(web3.utils.sha3(e.target.value).substr(2)))
+
                   });
       }
       else{
@@ -118,7 +119,7 @@ class Tools extends Component {
           if(error != null)
               console.log("Couldnt get accounts");
 
-         simpleContract.methods.payout(textBytes).send({from: result[0]}, function(error, result){
+         simpleContract.methods.payout(textValue).send({from: result[0]}, function(error, result){
                                  if(!error)
                                      console.log(JSON.stringify(result));
                                  else
