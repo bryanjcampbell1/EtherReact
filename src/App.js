@@ -191,8 +191,8 @@ class QuizObject extends Component {
         <p>Status: Registration Active (Game Live!)</p>
         <p>Buy In Amount: 0.01 ETH </p>
         <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In! </Button>
-        <p style={{color: "green" }}>Smart Contract Address: 0xc69b962bdebc87b39eeaa8672884e9c053246295 </p>
-        <p style={{color: "green" }}>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b </p>
+        <p><a href={'https://ropsten.etherscan.io/address/'+ '0xc69b962bdebc87b39eeaa8672884e9c053246295'}>Smart Contract Address: 0xc69b962bdebc87b39eeaa8672884e9c053246295</a></p>
+        <p><a href={'https://ropsten.etherscan.io/address/'+ '0x28944f7d5b83d073988994bd57dfee21be39cb7b'}>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b</a></p>
         <p>Assign the numbers 1 through 26 to the letters a through z </p>
         <p>Find 2 US Presidents who’s first name letters add to the same number </p>
         <p>Take those 2 first names and combine them </p>
