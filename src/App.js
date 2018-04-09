@@ -62,8 +62,8 @@ var abiData = [
 		"type": "constructor"
 	}
 ];
-
 var ethVal = 100000000000000000;
+//var ethVal = 1000000;
 var gasVal = 25000;
 var gasPrice = 40000000000;
 
@@ -71,7 +71,8 @@ var ethHex = '0x' + ethVal.toString(16);
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0xc69b962bdebc87b39eeaa8672884e9c053246295";
+var contractAddress = "0x1c8db2efcfa240fcf89d6f797cfc794afb191803";
+var winningAddress = '0x28944f7d5b83d073988994bd57dfee21be39cb7b';
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -167,8 +168,6 @@ class QuizObject extends Component {
 
        simpleContract.methods.buyIn().send({
                                from: result[0],
-                                gas: gasHex,
-                           gasPrice: gpHex,
                               value: ethHex
                            }, function(error, result){
                                if(!error)
@@ -191,8 +190,8 @@ class QuizObject extends Component {
         <p>Status: Registration Active (Game Live!)</p>
         <p>Buy In Amount: 0.01 ETH </p>
         <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In! </Button>
-        <p><a href={'https://ropsten.etherscan.io/address/'+ '0xc69b962bdebc87b39eeaa8672884e9c053246295'}>Smart Contract Address: 0xc69b962bdebc87b39eeaa8672884e9c053246295</a></p>
-        <p><a href={'https://ropsten.etherscan.io/address/'+ '0x28944f7d5b83d073988994bd57dfee21be39cb7b'}>Winning Wallet Address: 0x28944f7d5b83d073988994bd57dfee21be39cb7b</a></p>
+        <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: contractAddress</a></p>
+        <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>Winning Wallet Address: winningAddress</a></p>
         <p>Assign the numbers 1 through 26 to the letters a through z </p>
         <p>Find 2 US Presidents who’s first name letters add to the same number </p>
         <p>Take those 2 first names and combine them </p>

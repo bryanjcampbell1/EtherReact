@@ -65,7 +65,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0xc69b962bdebc87b39eeaa8672884e9c053246295";
+var contractAddress = "0x1c8db2efcfa240fcf89d6f797cfc794afb191803";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
