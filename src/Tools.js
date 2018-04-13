@@ -115,7 +115,11 @@ class Tools extends Component {
       var textValue = this.textInput.value;
       var textBytes = web3.utils.asciiToHex(textValue);
 
-      web3.eth.getAccounts(function(error, result) {
+			if(!web3.utils.checkAddressChecksum(textValue)){
+				alert("Not a valid checksum address!");
+			}
+			else{
+				web3.eth.getAccounts(function(error, result) {
           if(error != null)
               console.log("Couldnt get accounts");
 
@@ -127,10 +131,9 @@ class Tools extends Component {
 							 console.error(error);
 							 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider downloading the MetaMask chrome extension!  ');
 						 }
-                             });
+          });
 
-      });
-
+      });}
     }
 
   render() {
