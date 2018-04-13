@@ -11,6 +11,7 @@ import Web3 from 'web3';
 
 var $ = require('jquery');
 
+/*
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 //web3.eth.getAccounts().then(console.log);
 web3.eth.getAccounts(function(error, result) {
@@ -28,7 +29,7 @@ web3.eth.getAccounts(function(error, result) {
    });
 
 });
-
+*/
 
 ReactDOM.render(
   <div>

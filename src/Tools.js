@@ -65,7 +65,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x1c8db2efcfa240fcf89d6f797cfc794afb191803";
+var contractAddress = "0xf73eecbb109b08e9b21084c191403df4f942d4f6";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -120,10 +120,13 @@ class Tools extends Component {
               console.log("Couldnt get accounts");
 
          simpleContract.methods.payout(textValue).send({from: result[0]}, function(error, result){
-                                 if(!error)
-                                     console.log(JSON.stringify(result));
-                                 else
-                                     console.error(error);
+					 if(!error){
+							 console.log(JSON.stringify(result));
+						 }
+					 else{
+							 console.error(error);
+							 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider downloading the MetaMask chrome extension!  ');
+						 }
                              });
 
       });

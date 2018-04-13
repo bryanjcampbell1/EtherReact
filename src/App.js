@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, Well, Button } from 'react-bootstrap';
 import './App.css';
+import './QuizObject';
 import Web3 from 'web3';
 import logo from './ether4.png';
 import genKey from './generateKeys.png';
@@ -10,8 +11,13 @@ import impAcc from './importAccount.png';
 import claim from './claim.png';
 import Tools from './Tools';
 
-
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+
+var QuizObject = {
+    contractAddress: "0xf73eecbb109b08e9b21084c191403df4f942d4f6",
+    winningAddress: '0x28944f7d5B83D073988994bd57DfEe21Be39Cb7B',
+    description:"hello world"
+};
 
 var abiData = [
 	{
@@ -63,7 +69,6 @@ var abiData = [
 	}
 ];
 var ethVal = 100000000000000000;
-//var ethVal = 1000000;
 var gasVal = 25000;
 var gasPrice = 40000000000;
 
@@ -71,8 +76,8 @@ var ethHex = '0x' + ethVal.toString(16);
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x1c8db2efcfa240fcf89d6f797cfc794afb191803";
-var winningAddress = '0x28944f7d5b83d073988994bd57dfee21be39cb7b';
+var contractAddress = QuizObject.contractAddress;
+var winningAddress = QuizObject.winningAddress;
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -155,7 +160,7 @@ class Example extends React.Component {
   }
 }
 
-class QuizObject extends Component {
+class QuizComponent extends Component {
   saySomething(something) {
       console.log(something);
   }
@@ -163,17 +168,22 @@ class QuizObject extends Component {
   handleClick(e) {
 
     web3.eth.getAccounts(function(error, result) {
-        if(error != null)
+        if(error != null){
             console.log("Couldnt get accounts");
+
+					}
 
        simpleContract.methods.buyIn().send({
                                from: result[0],
                               value: ethHex
                            }, function(error, result){
-                               if(!error)
+                               if(!error){
                                    console.log(JSON.stringify(result));
-                               else
+																 }
+                               else{
                                    console.error(error);
+																	 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider downloading the MetaMask chrome extension!  ');
+																 }
                            });
 
     });
@@ -188,10 +198,10 @@ class QuizObject extends Component {
       <div className="QuizObject" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
       <Well className="text-center" style={{width: '95%', }}>
         <p>Status: Registration Active (Game Live!)</p>
-        <p>Buy In Amount: 0.01 ETH </p>
+        <p>Buy In Amount: 0.1 ETH </p>
         <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In! </Button>
-        <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: contractAddress</a></p>
-        <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>Winning Wallet Address: winningAddress</a></p>
+        <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
+        <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>Winning Wallet Address: {winningAddress}</a></p>
         <p>Assign the numbers 1 through 26 to the letters a through z </p>
         <p>Find 2 US Presidents who’s first name letters add to the same number </p>
         <p>Take those 2 first names and combine them </p>
@@ -221,7 +231,7 @@ function AllTogether(props) {
   if (pagenumber == 1) {
     return <div>
             <Banner />
-            <QuizObject />
+            <QuizComponent />
           </div>;
   }
   else if (pagenumber == 2) {
