@@ -115,7 +115,10 @@ class Tools extends Component {
       var textValue = this.textInput.value;
       var textBytes = web3.utils.asciiToHex(textValue);
 
-			if(!web3.utils.checkAddressChecksum(textValue)){
+			if(textValue ==""){
+				alert("Not a valid checksum address!");
+			}
+			else if (!web3.utils.checkAddressChecksum(textValue) ) {
 				alert("Not a valid checksum address!");
 			}
 			else{
@@ -129,7 +132,10 @@ class Tools extends Component {
 						 }
 					 else{
 							 console.error(error);
-							 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider downloading the MetaMask chrome extension!  ');
+							 var errorString = error.message.toString();
+							 if(errorString.includes("address specified")){
+								 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider using the MetaMask chrome extension!  ');
+							 }
 						 }
           });
 

@@ -182,7 +182,11 @@ class QuizComponent extends Component {
 																 }
                                else{
                                    console.error(error);
-																	 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider downloading the MetaMask chrome extension!  ');
+																	 var errorString = error.message.toString();
+																	 if(errorString.includes("address specified")){
+																		 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider using the MetaMask chrome extension!  ');
+																	 }
+
 																 }
                            });
 
