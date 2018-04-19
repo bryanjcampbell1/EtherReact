@@ -2,10 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
-import QuizPreview from './QuizPreview';
-import QuizObject from './QuizObject';
-import HomePage from './HomePage';
-import Tools from './Tools';
+
 import registerServiceWorker from './registerServiceWorker';
 import Web3 from 'web3';
 
