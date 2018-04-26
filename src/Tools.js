@@ -11,6 +11,20 @@ var $ = require('jquery');
 var abiData = [
 	{
 		"constant": false,
+		"inputs": [
+			{
+				"name": "answer",
+				"type": "address"
+			}
+		],
+		"name": "addAnswer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [],
 		"name": "allowRefund",
 		"outputs": [],
@@ -55,6 +69,72 @@ var abiData = [
 		"payable": false,
 		"stateMutability": "nonpayable",
 		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "hashedAnswer",
+				"type": "address"
+			}
+		],
+		"name": "addNewWinningAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "player",
+				"type": "address"
+			}
+		],
+		"name": "addPlayer",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getGameNumber",
+		"outputs": [
+			{
+				"name": "gameNumber_",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "getWinnerAddress",
+		"outputs": [
+			{
+				"name": "winnerAddress_",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
 	}
 ];
 
@@ -65,7 +145,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0xf73eecbb109b08e9b21084c191403df4f942d4f6";
+var contractAddress = "0x44a1947efdd72eda8d0052a91f18dfd4f22565a2";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;

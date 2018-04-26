@@ -1,5 +1,8 @@
 pragma solidity ^0.4.11;
 
+//in real contract add condition that now > gameStartTime in order
+//to call payout
+
 contract quizContract {
 
 //-------------------------GLOBALS--------------------------------//
@@ -41,10 +44,11 @@ contract quizContract {
 
         //give roughly an hour window for player to join game
         //before they can submit answer or ask for refund
-        gameStartTime = now + 3600;
+        gameStartTime = now + 3600*4;
 
         //address eliptically generated from hashed answer
         winnerAddress = 0x28944f7d5B83D073988994bd57DfEe21Be39Cb7B;
+        addNewWinningAddress(winnerAddress);
         authorAddress = msg.sender;
     }
 
@@ -84,11 +88,10 @@ contract quizContract {
         }
 
         require(paid);
-
         require(((playerNumber==1 ) && (now >= gameStartTime)) || (puzzleError == true) );
 
         gameOn = false;
-        msg.sender.transfer(this.balance);
+        msg.sender.transfer(buyInAmount);
 
     }
 
@@ -109,6 +112,7 @@ contract quizContract {
     }
 
     function payout(address payTo) public{
+      require(now >= gameStartTime);
 
         bool paid = false;
 
@@ -133,9 +137,24 @@ contract quizContract {
         authorAddress.transfer(authorPay);
         payTo.transfer(winnerPay);
 
+
+//Game is over.
+//Increment gameNumber,change winningAddress, empty paidPlayers, set new start time
         gameNumber = gameNumber + 1;
         winnerAddress = winningAddressArray[gameNumber];
+        paidPlayers.length = 0;
+        gameStartTime = now + 3600*4;
 
+    }
+
+    //Get data
+    function getGameNumber() public view returns (uint gameNumber_)
+    {
+        gameNumber_ = gameNumber;
+    }
+    function getWinnerAddress() public view returns (address winnerAddress_)
+    {
+        winnerAddress_ = winnerAddress;
     }
 
 }
