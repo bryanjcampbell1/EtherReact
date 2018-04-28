@@ -25,23 +25,144 @@ function QuizDisplay(props) {
 
 }
 
+//this works
+/*
 class Details extends React.Component {
-  render() {
+  //const win = props.win;
+render() {
+  if(1==5){
     return (
       <div style={{ height: '10%' }}>
         <p>{this.props.win}</p>
-        <p>{this.props.step1}</p>
-        <p>{this.props.step2}</p>
-        <p>{this.props.step3}</p>
-        <p>{this.props.step4}</p>
-        <p>{this.props.step5}</p>
-        <p>{this.props.step6}</p>
-        <p>{this.props.step7}</p>
-        <p>{this.props.step8}</p>
-        <p>{this.props.step9}</p>
       </div>
     );
   }
+  else{
+    return (
+      <div style={{ height: '10%' }}>
+        <p>"yello"</p>
+      </div>
+    );
+  }
+
+}
+
+}
+*/
+
+class Details extends React.Component {
+  //const win = props.win;
+render() {
+  if(this.props.step2 == "") {
+    return(
+      <div>
+        <p>{this.props.win}</p>
+        <p>Step 1: {this.props.step1}</p>
+      </div>
+    );
+  }
+  else if(this.props.step3 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+    </div>
+    );
+  }
+  else if(this.props.step4 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+    </div>
+    );
+  }
+  else if(this.props.step5 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+      <p>Step 4: {this.props.step4}</p>
+    </div>
+    );
+  }
+  else if(this.props.step6 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+      <p>Step 4: {this.props.step4}</p>
+      <p>Step 5: {this.props.step5}</p>
+    </div>
+    );
+  }
+  else if(this.props.step7 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+      <p>Step 4: {this.props.step4}</p>
+      <p>Step 5: {this.props.step5}</p>
+      <p>Step 6: {this.props.step6}</p>
+    </div>
+    );
+  }
+  else if(this.props.step8 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+      <p>Step 4: {this.props.step4}</p>
+      <p>Step 5: {this.props.step5}</p>
+      <p>Step 6: {this.props.step6}</p>
+      <p>Step 7: {this.props.step7}</p>
+    </div>
+    );
+  }
+  else if(this.props.step9 == "") {
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+      <p>Step 4: {this.props.step4}</p>
+      <p>Step 5: {this.props.step5}</p>
+      <p>Step 6: {this.props.step6}</p>
+      <p>Step 7: {this.props.step7}</p>
+      <p>Step 8: {this.props.step8}</p>
+    </div>
+    );
+  }
+  else{
+    return(
+    <div>
+      <p>{this.props.win}</p>
+      <p>Step 1: {this.props.step1}</p>
+      <p>Step 2: {this.props.step2}</p>
+      <p>Step 3: {this.props.step3}</p>
+      <p>Step 4: {this.props.step4}</p>
+      <p>Step 5: {this.props.step5}</p>
+      <p>Step 6: {this.props.step6}</p>
+      <p>Step 7: {this.props.step7}</p>
+      <p>Step 8: {this.props.step8}</p>
+      <p>Step 9: {this.props.step9}</p>
+    </div>
+    );
+  }
+
+}
 }
 
 class Preview extends React.Component {
