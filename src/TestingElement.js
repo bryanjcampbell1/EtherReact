@@ -146,9 +146,7 @@ class TestingElement extends Component {
 
   constructor(props) {
     super(props);
-
-
-
+  
     this.state = {paid: false,
                 winner:"",
                 step1: "",
