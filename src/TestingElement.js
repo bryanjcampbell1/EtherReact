@@ -3,8 +3,8 @@ import {  Well, Button } from 'react-bootstrap';
 
 var $ = require('jquery');
 
-var contractAddress = "";
-var winningAddress = "";
+//var contractAddress = "";
+//var winningAddress = "";
 var gameNumber = 1;
 var descriptionArray = [];
 
@@ -25,30 +25,6 @@ function QuizDisplay(props) {
 
 }
 
-//this works
-/*
-class Details extends React.Component {
-  //const win = props.win;
-render() {
-  if(1==5){
-    return (
-      <div style={{ height: '10%' }}>
-        <p>{this.props.win}</p>
-      </div>
-    );
-  }
-  else{
-    return (
-      <div style={{ height: '10%' }}>
-        <p>"yello"</p>
-      </div>
-    );
-  }
-
-}
-
-}
-*/
 
 class Details extends React.Component {
   //const win = props.win;
@@ -56,7 +32,6 @@ render() {
   if(this.props.step2 == "") {
     return(
       <div>
-        <p>{this.props.win}</p>
         <p>Step 1: {this.props.step1}</p>
       </div>
     );
@@ -64,7 +39,6 @@ render() {
   else if(this.props.step3 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
     </div>
@@ -73,7 +47,6 @@ render() {
   else if(this.props.step4 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -83,7 +56,6 @@ render() {
   else if(this.props.step5 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -94,7 +66,6 @@ render() {
   else if(this.props.step6 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -106,7 +77,6 @@ render() {
   else if(this.props.step7 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -119,7 +89,6 @@ render() {
   else if(this.props.step8 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -133,7 +102,6 @@ render() {
   else if(this.props.step9 == "") {
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -148,7 +116,6 @@ render() {
   else{
     return(
     <div>
-      <p>{this.props.win}</p>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -176,8 +143,12 @@ class Preview extends React.Component {
 }
 
 class TestingElement extends Component {
+
   constructor(props) {
     super(props);
+
+
+
     this.state = {paid: false,
                 winner:"",
                 step1: "",
@@ -225,6 +196,9 @@ class TestingElement extends Component {
 
 
   render() {
+    var contractAddress = this.props.contractAddress;
+    var winningAddress = this.props.winningAddress;
+
       return (
         <div className="TestingElement" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
         <Well className="text-center" style={{width: '95%', }}>
@@ -232,7 +206,7 @@ class TestingElement extends Component {
           <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Click Me! </Button>
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>Winning Wallet Address: {winningAddress}</a></p>
-          <QuizDisplay paid={this.state.paid} winner={this.state.winner} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
+          <QuizDisplay paid={this.state.paid} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
         </Well>
         </div>
 
