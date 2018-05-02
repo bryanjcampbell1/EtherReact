@@ -7,7 +7,6 @@ import Web3 from 'web3';
 var $ = require('jquery');
 
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
-
 var abiData = [
 	{
 		"constant": false,
@@ -137,36 +136,29 @@ var abiData = [
 		"type": "function"
 	}
 ];
-
-
 var contractAddress = "0x44a1947efdd72eda8d0052a91f18dfd4f22565a2";
-var winAddress = "jk";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = {winningAddress: ""};
-		//this.otherFunction = this.otherFunction.bind(this);
+		//default value just looks better
+    this.state = {winningAddress: "0xa496e724234a2Bf52776be7f4A11a7F691226dD2"};
+
   }
 
-
-componentWillMount(){
-  simpleContract.methods.getWinnerAddress().call((error, result) => {
-    alert(result);
-    this.otherFunction(result);
-  });
-}
+	componentWillMount(){
+	  simpleContract.methods.getWinnerAddress().call((error, result) => {
+	    this.otherFunction(result);
+	  });
+	}
 
 	otherFunction(value){
-		alert("here");
 		this.setState({
       winningAddress: value
     });
   }
-
-
 
   render() {
     return (

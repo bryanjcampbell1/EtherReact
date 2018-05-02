@@ -1,14 +1,73 @@
 import React, { Component } from 'react';
 import {  Well, Button } from 'react-bootstrap';
+import Web3 from 'web3';
 
 var $ = require('jquery');
 
-//var contractAddress = "";
-//var winningAddress = "";
 var gameNumber = 1;
 var descriptionArray = [];
 
 
+const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
+
+var abiData = [
+  {
+    "constant": true,
+    "inputs": [],
+    "name": "getName",
+    "outputs": [
+      {
+        "name": "winnerName_",
+        "type": "bytes32"
+      }
+    ],
+    "payable": false,
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [],
+    "name": "buyIn",
+    "outputs": [],
+    "payable": true,
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "constant": false,
+    "inputs": [
+      {
+        "name": "yourName",
+        "type": "bytes32"
+      }
+    ],
+    "name": "setName",
+    "outputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "payable": false,
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  }
+];
+
+var ethVal = 100000000000000000;
+var gasVal = 25000;
+var gasPrice = 40000000000;
+
+var ethHex = '0x' + ethVal.toString(16);
+var gasHex = '0x' + gasVal.toString(16);
+var gpHex = '0x' + gasPrice.toString(16);
+
+//contract address is hard coded --> doesnt have to be read in by state
+var contractAddress = "0x44a1947efdd72eda8d0052a91f18dfd4f22565a2";
+var simpleContract = new web3.eth.Contract(abiData);
+simpleContract.options.address = contractAddress;
 
 function QuizDisplay(props) {
   const userHasInFactPaid = props.paid;
@@ -136,7 +195,7 @@ class Preview extends React.Component {
   render() {
     return (
       <div style={{ height: '10%' }}>
-        <p>"nnnnnn"</p>
+        <p>""</p>
       </div>
     );
   }
@@ -162,7 +221,31 @@ class TestingElement extends Component {
   }
 
   handleClick(e) {
-    this.getData().done(this.handleData.bind(this));
+
+    web3.eth.getAccounts((error, result) => {
+        if(error != null){
+            console.log("Couldnt get accounts");
+
+					}
+
+       simpleContract.methods.buyIn().send({
+                               from: result[0],
+                              value: ethHex
+                           }, (error, result) => {
+                             if(!error){
+                                 console.log(JSON.stringify(result));
+                                 this.getData().done(this.handleData.bind(this));
+                               }
+                             else{
+                                 console.error(error);
+                                 var errorString = error.message.toString();
+                                 if(errorString.includes("address specified")){
+                                   alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider using the MetaMask chrome extension!  ');
+                                 }
+                           }
+                         });
+
+    });
   }
 
   getData() {
@@ -190,8 +273,6 @@ class TestingElement extends Component {
       step9: descriptionArray[9]
     });
   }
-
-
 
   render() {
     var contractAddress = this.props.contractAddress;
