@@ -146,7 +146,7 @@ class TestingElement extends Component {
 
   constructor(props) {
     super(props);
-  
+
     this.state = {paid: false,
                 winner:"",
                 step1: "",
@@ -174,7 +174,7 @@ class TestingElement extends Component {
 
  handleData(data) {
     descriptionArray  =  $.parseJSON(data);
-    alert(descriptionArray[0]);
+    //alert(descriptionArray[0]);
 
     this.setState({
       paid: true,
