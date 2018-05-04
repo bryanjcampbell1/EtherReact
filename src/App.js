@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
 import Navigation from './Navigation';
-import TestingElement from './TestingElement';
 import Web3 from 'web3';
 
 var $ = require('jquery');
@@ -163,8 +161,7 @@ class App extends Component {
   render() {
     return (
         <div>
-          <Navigation/>
-          <TestingElement winningAddress={this.state.winningAddress} contractAddress={contractAddress}/>
+          <Navigation winningAddress={this.state.winningAddress} contractAddress={contractAddress}/>
         </div>
     );
   }

@@ -7,12 +7,16 @@ import Banner from './Banner';
 import Example from './Example';
 
 
+
 function AllTogether(props) {
   const pagenumber = props.page;
+  const winningAddress = props.winningAddress;
+  const contractAddress = props.contractAddress;
+
   if (pagenumber == 1) {
     return <div>
             <Banner />
-            <QuizComponent />
+            <QuizComponent winningAddress={winningAddress} contractAddress={contractAddress}/>
           </div>;
   }
   else if (pagenumber == 2) {
@@ -28,10 +32,16 @@ function AllTogether(props) {
 
 }
 
+
+
 class Navigation extends React.Component{
   constructor(props) {
     super(props);
     this.state = {page: 1};
+    const winningAddress = props.winningAddress;
+    const contractAddress = props.contractAddress;
+
+
   }
 
   handleSelect(eventKey){
@@ -73,7 +83,7 @@ class Navigation extends React.Component{
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-         <AllTogether page={this.state.page}/>
+         <AllTogether page={this.state.page} winningAddress={this.props.winningAddress} contractAddress={this.props.contractAddress}/>
          </div>
     );
   }
