@@ -7,7 +7,6 @@ import Banner from './Banner';
 import Example from './Example';
 
 
-
 function AllTogether(props) {
   const pagenumber = props.page;
   const winningAddress = props.winningAddress;

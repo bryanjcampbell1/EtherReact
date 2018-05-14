@@ -34,7 +34,7 @@ $Step10;
 $Description = array();
 
 //get all from gameObject where id matches entry
-$sql = "SELECT * FROM  `GameObject` WHERE `gameNumber` = '".$g."'";
+$sql = "SELECT * FROM  `GameObject` WHERE `winningWallet` = '".$g."'";
 
 
  if(!$result = $conn->query($sql)){

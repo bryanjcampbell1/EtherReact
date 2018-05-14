@@ -250,12 +250,11 @@ class QuizComponent extends Component {
 
   getData() {
 //Things to Check
-    const winningWalletAddress = this.props.winningAddress;
-    alert(winningWalletAddress);
-    alert("check it");
-    var gameNumber = 1;
+    var winningWalletAddress = this.props.winningAddress;
+    winningWalletAddress = winningWalletAddress.substring(2);
+
     return $.ajax({
-        url : "getDescription.php?g=" + gameNumber,
+        url : "getDescription.php?g=" + winningWalletAddress,
         type: 'GET'
     });
   }
