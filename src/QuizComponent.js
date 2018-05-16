@@ -11,49 +11,133 @@ var winningWalletAddress;
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 
 var abiData = [
-  {
-    "constant": true,
-    "inputs": [],
-    "name": "getName",
-    "outputs": [
-      {
-        "name": "winnerName_",
-        "type": "bytes32"
-      }
-    ],
-    "payable": false,
-    "stateMutability": "view",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [],
-    "name": "buyIn",
-    "outputs": [],
-    "payable": true,
-    "stateMutability": "payable",
-    "type": "function"
-  },
-  {
-    "constant": false,
-    "inputs": [
-      {
-        "name": "yourName",
-        "type": "bytes32"
-      }
-    ],
-    "name": "setName",
-    "outputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "function"
-  },
-  {
-    "inputs": [],
-    "payable": false,
-    "stateMutability": "nonpayable",
-    "type": "constructor"
-  }
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "answer",
+				"type": "address"
+			}
+		],
+		"name": "addAnswer",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "allowRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "buyIn",
+		"outputs": [
+			{
+				"name": "winnerAddress_",
+				"type": "address"
+			}
+		],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "payTo",
+				"type": "address"
+			}
+		],
+		"name": "payout",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "playerRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "hashedAnswer",
+				"type": "address"
+			}
+		],
+		"name": "addNewWinningAddress",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "player",
+				"type": "address"
+			}
+		],
+		"name": "addPlayer",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"name": "userAddress",
+				"type": "address"
+			}
+		],
+		"name": "loadPage",
+		"outputs": [
+			{
+				"name": "winnerAddress_",
+				"type": "address"
+			},
+			{
+				"name": "paid_",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
 ];
 
 var ethVal = 100000000000000000;
@@ -65,7 +149,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x44a1947efdd72eda8d0052a91f18dfd4f22565a2";
+var contractAddress = "0x68ff225ac00d859bf0c88815f767e93d46a0a26e";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -233,8 +317,15 @@ class QuizComponent extends Component {
                               value: ethHex
                            }, (error, result) => {
                              if(!error){
-                                 console.log(JSON.stringify(result));
-                                 this.getData().done(this.handleData.bind(this));
+
+                                 simpleContract.methods.loadPage("0x81b6db6cb74165A4B5027Af9FAbc3CAFc9EAE030").call((error, result) => {
+                          	 			//this.otherFunction(result);
+                          				//alert(result[0]);
+                          				//alert(result[1]);
+                                  this.getData(result[0]).done(this.handleData.bind(this));
+
+                          	 	  });
+
                                }
                              else{
                                  console.error(error);
@@ -248,9 +339,11 @@ class QuizComponent extends Component {
     });
   }
 
-  getData() {
+  getData(addressObject) {
+    alert("here");
 //Things to Check
-    var winningWalletAddress = this.props.winningAddress;
+    //var winningWalletAddress = this.props.winningAddress;
+    var winningWalletAddress = addressObject;
     winningWalletAddress = winningWalletAddress.substring(2);
 
     return $.ajax({
