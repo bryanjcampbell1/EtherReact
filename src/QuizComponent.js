@@ -372,7 +372,7 @@ class QuizComponent extends Component {
 
   render() {
     var contractAddress = this.props.contractAddress;
-    var winningAddress = this.props.winningAddress;
+    var winningAddress = this.state.winner;
 
       return (
         <div className="TestingElement" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
