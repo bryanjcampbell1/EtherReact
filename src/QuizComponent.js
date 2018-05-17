@@ -291,7 +291,7 @@ class QuizComponent extends Component {
     const winningWalletAddress = props.winningAddress;
 
     this.state = {paid: false,
-                winner:"",
+                winner:"0xa496e724234a2Bf52776be7f4A11a7F691226dD2",
                 step1: "",
                 step2: "",
                 step3: "",
@@ -357,7 +357,7 @@ class QuizComponent extends Component {
 
     this.setState({
       paid: true,
-      winner: descriptionArray[0],
+      winner: "0x" + descriptionArray[0],
       step1: descriptionArray[1],
       step2: descriptionArray[2],
       step3: descriptionArray[3],

@@ -154,9 +154,7 @@ class App extends Component {
 		   alert(result[0]);
 
 			 simpleContract.methods.loadPage(result[0]).call((error, result) => {
-	 			//this.otherFunction(result);
-				alert(result[0]);
-				alert(result[1]);
+	 			this.otherFunction(result[0]);
 	 	  });
 
 		});
