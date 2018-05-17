@@ -9,13 +9,15 @@ import Example from './Example';
 
 function AllTogether(props) {
   const pagenumber = props.page;
-  const winningAddress = props.winningAddress;
+  //const winningAddress = props.winningAddress;
   const contractAddress = props.contractAddress;
+
+  //alert("nav winningAddress is" + winningAddress);
 
   if (pagenumber == 1) {
     return <div>
             <Banner />
-            <QuizComponent winningAddress={winningAddress} contractAddress={contractAddress}/>
+            <QuizComponent contractAddress={contractAddress}/>
           </div>;
   }
   else if (pagenumber == 2) {
@@ -82,7 +84,7 @@ class Navigation extends React.Component{
             </Nav>
           </Navbar.Collapse>
         </Navbar>
-         <AllTogether page={this.state.page} winningAddress={this.props.winningAddress} contractAddress={this.props.contractAddress}/>
+         <AllTogether page={this.state.page} contractAddress={this.props.contractAddress}/>
          </div>
     );
   }

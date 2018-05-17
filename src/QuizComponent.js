@@ -288,10 +288,12 @@ class QuizComponent extends Component {
 
   constructor(props) {
     super(props);
-    const winningWalletAddress = props.winningAddress;
+    //var winningWalletAddress = this.props.winningAddress;
+    //const winningAddress = props.winningAddress;
+    //alert("yo" + winningAddress);
 
     this.state = {paid: false,
-                winner:"0xa496e724234a2Bf52776be7f4A11a7F691226dD2",
+                winner: "",
                 step1: "",
                 step2: "",
                 step3: "",
@@ -302,7 +304,24 @@ class QuizComponent extends Component {
                 step8: "",
                 step9: ""
               };
+
   }
+
+  componentWillMount(){
+
+  		web3.eth.getAccounts((error, result) =>  {
+  		    if(error != null)
+  		        console.log("Couldnt get accounts");
+
+  			 simpleContract.methods.loadPage(result[0]).call((error, result) => {
+           if (result[1] == 1){
+                  this.getData(result[0]).done(this.handleData.bind(this));
+            }
+  	 	  	});
+
+  		});
+
+	}
 
   handleClick(e) {
 
@@ -320,8 +339,7 @@ class QuizComponent extends Component {
 
                                  simpleContract.methods.loadPage("0x81b6db6cb74165A4B5027Af9FAbc3CAFc9EAE030").call((error, result) => {
                           	 			//this.otherFunction(result);
-                          				//alert(result[0]);
-                          				//alert(result[1]);
+                          				
                                   this.getData(result[0]).done(this.handleData.bind(this));
 
                           	 	  });
@@ -340,7 +358,6 @@ class QuizComponent extends Component {
   }
 
   getData(addressObject) {
-    alert("here");
 //Things to Check
     //var winningWalletAddress = this.props.winningAddress;
     var winningWalletAddress = addressObject;
@@ -374,6 +391,10 @@ class QuizComponent extends Component {
     var contractAddress = this.props.contractAddress;
     var winningAddress = this.state.winner;
 
+    if (winningAddress != ""){
+      winningAddress = "Winning Wallet Address: " + winningAddress;
+    }
+
       return (
         <div className="TestingElement" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
         <Well className="text-center" style={{width: '95%', }}>
@@ -382,7 +403,7 @@ class QuizComponent extends Component {
           <p>For more details check out the Example page and source code{"\n"} {"\n"}</p>
           <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
-          <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>Winning Wallet Address: {winningAddress}</a></p>
+          <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
           <QuizDisplay paid={this.state.paid} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
         </Well>
         </div>
