@@ -311,7 +311,7 @@ class QuizComponent extends Component {
 
   		web3.eth.getAccounts((error, result) =>  {
   		    if(error != null)
-  		        console.log("Couldnt get accounts");
+  		        //alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
 
   			 simpleContract.methods.loadPage(result[0]).call((error, result) => {
            if (result[1] == 1){
@@ -327,10 +327,9 @@ class QuizComponent extends Component {
 
     web3.eth.getAccounts((error, result) => {
         if(error != null){
-            console.log("Couldnt get accounts");
+            alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
 
 					}
-
        simpleContract.methods.buyIn().send({
                                from: result[0],
                               value: ethHex
@@ -339,18 +338,23 @@ class QuizComponent extends Component {
 
                                  simpleContract.methods.loadPage("0x81b6db6cb74165A4B5027Af9FAbc3CAFc9EAE030").call((error, result) => {
                           	 			//this.otherFunction(result);
-                          				
+
                                   this.getData(result[0]).done(this.handleData.bind(this));
 
                           	 	  });
 
                                }
                              else{
+
                                  console.error(error);
                                  var errorString = error.message.toString();
                                  if(errorString.includes("address specified")){
-                                   alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider using the MetaMask chrome extension!  ');
+                                   alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
                                  }
+																 else{
+																	 
+																	 alert(errorString);
+																 }
                            }
                          });
 
@@ -387,7 +391,7 @@ class QuizComponent extends Component {
     });
   }
 
-  render() {
+  render() {//stop
     var contractAddress = this.props.contractAddress;
     var winningAddress = this.state.winner;
 
