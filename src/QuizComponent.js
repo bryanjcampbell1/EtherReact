@@ -154,7 +154,8 @@ simpleContract.options.address = contractAddress;
 
 function QuizDisplay(props) {
   const userHasInFactPaid = props.paid;
-	const gameIsOn = props.gameLive;
+	var gameIsOn = props.gameLive;
+	//gameIsOn = false;
 
   if ((userHasInFactPaid == true) && (gameIsOn == true)) { //user has paid and game is live
     return <div>
@@ -163,7 +164,7 @@ function QuizDisplay(props) {
   }
 	else if ((userHasInFactPaid == true) && (gameIsOn == false)) { //user has paid and game is not live
     return <div>
-						<p>"Congrats! You have registered. Game details live at 12 EST"</p>
+						<p>Congrats! You have registered. Game details live at 12 EST</p>
             <Preview />
           </div>;
   }
@@ -346,11 +347,10 @@ class QuizComponent extends Component {
 				        timeOfNext12.setDate(initializedTime.getDate() + 1);
 				      }
 
-				      //alert(timeOfNext12);
-				      //alert(currentTime);
+
 
 				      timeTillNext12 = timeOfNext12 - currentTime;
-				      alert(timeTillNext12);
+				     // alert(timeTillNext12);
 
 							if(timeTillNext12 < 0){
 								this.setState({
@@ -486,6 +486,8 @@ class QuizComponent extends Component {
   render() {//stop
     var contractAddress = this.props.contractAddress;
     var winningAddress = this.state.winner;
+
+
 
     if (winningAddress != ""){
       winningAddress = "Winning Wallet Address: " + winningAddress;
