@@ -154,9 +154,17 @@ simpleContract.options.address = contractAddress;
 
 function QuizDisplay(props) {
   const userHasInFactPaid = props.paid;
-  if (userHasInFactPaid == true) { //user has paid
+	const gameIsOn = props.gameLive;
+
+  if ((userHasInFactPaid == true) && (gameIsOn == true)) { //user has paid and game is live
     return <div>
             <Details win={props.winner} step1={props.step1} step2={props.step2} step3={props.step3} step4={props.step4} step5={props.step5} step6={props.step6} step7={props.step7} step8={props.step8} step9={props.step9} />
+          </div>;
+  }
+	else if ((userHasInFactPaid == true) && (gameIsOn == false)) { //user has paid and game is not live
+    return <div>
+						<p>"Congrats! You have registered. Game details live at 12 EST"</p>
+            <Preview />
           </div>;
   }
   else { //user has not paid
@@ -292,6 +300,7 @@ class QuizComponent extends Component {
     //alert("yo" + winningAddress);
 
     this.state = {paid: false,
+								gameLive: false,
                 winner: "",
                 step1: "",
                 step2: "",
@@ -330,7 +339,7 @@ class QuizComponent extends Component {
 				      timeOfNext12.setSeconds(0);
 				      timeOfNext12.setMilliseconds(0);
 
-				      if(initializedTime.getHours() < 9){ //game was initialized in the morning
+				      if(initializedTime.getHours() < 12){ //game was initialized in the morning
 				        timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
 				      }
 				      else{ //game was initialized in the afternoon or evening
@@ -344,8 +353,12 @@ class QuizComponent extends Component {
 				      alert(timeTillNext12);
 
 							if(timeTillNext12 < 0){
+								this.setState({
+									gameLive: true
+								});
 								if (result[1] == 1){
 		                   this.getData(result[0]).done(this.handleData.bind(this));
+
 		             }
 							}
 							else{
@@ -392,7 +405,7 @@ class QuizComponent extends Component {
 														      timeOfNext12.setSeconds(0);
 														      timeOfNext12.setMilliseconds(0);
 
-														      if(initializedTime.getHours() < 9){ //game was initialized in the morning
+														      if(initializedTime.getHours() < 12){ //game was initialized in the morning
 														        timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
 														      }
 														      else{ //game was initialized in the afternoon or evening
@@ -406,6 +419,9 @@ class QuizComponent extends Component {
 														      //alert(timeTillNext12);
 
 																	if(timeTillNext12 < 0){
+																		this.setState({
+																			gameLive: true
+																		});
 																		if (result[1] == 1){
 												                   this.getData(result[0]).done(this.handleData.bind(this));
 												             }
@@ -484,7 +500,7 @@ class QuizComponent extends Component {
           <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
-          <QuizDisplay paid={this.state.paid} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
+          <QuizDisplay paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
         </Well>
         </div>
 
