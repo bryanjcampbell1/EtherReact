@@ -38,12 +38,7 @@ var abiData = [
 		"constant": false,
 		"inputs": [],
 		"name": "buyIn",
-		"outputs": [
-			{
-				"name": "winnerAddress_",
-				"type": "address"
-			}
-		],
+		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
 		"type": "function"
@@ -132,6 +127,10 @@ var abiData = [
 			{
 				"name": "paid_",
 				"type": "bool"
+			},
+			{
+				"name": "gameStartTime_",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -149,7 +148,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x68ff225ac00d859bf0c88815f767e93d46a0a26e";
+var contractAddress = "0x739e8ad301bbc778cc4db51c4d8664f9431188f4";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -310,14 +309,54 @@ class QuizComponent extends Component {
   componentWillMount(){
 
   		web3.eth.getAccounts((error, result) =>  {
-  		    if(error != null)
-  		        //alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
 
-  			 simpleContract.methods.loadPage(result[0]).call((error, result) => {
-           if (result[1] == 1){
-                  this.getData(result[0]).done(this.handleData.bind(this));
-            }
-  	 	  	});
+  		    if(error != null){
+						alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
+					}
+					else {
+						simpleContract.methods.loadPage(result[0]).call((error, result) => {
+
+							var initializedTime = new Date(result[2]*1000);
+							//var initializedTime = new Date(2018, 4, 31, 10, 0, 0, 0);
+				      var currentTime   = new Date();
+
+				      var timeOfNext12  = new Date();
+				      var timeTillNext12 = new Date();
+
+				      timeOfNext12.setFullYear(initializedTime.getFullYear());
+				      timeOfNext12.setMonth(initializedTime.getMonth());
+				      timeOfNext12.setHours(12);
+				      timeOfNext12.setMinutes(0);
+				      timeOfNext12.setSeconds(0);
+				      timeOfNext12.setMilliseconds(0);
+
+				      if(initializedTime.getHours() < 9){ //game was initialized in the morning
+				        timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
+				      }
+				      else{ //game was initialized in the afternoon or evening
+				        timeOfNext12.setDate(initializedTime.getDate() + 1);
+				      }
+
+				      //alert(timeOfNext12);
+				      //alert(currentTime);
+
+				      timeTillNext12 = timeOfNext12 - currentTime;
+				      alert(timeTillNext12);
+
+							if(timeTillNext12 < 0){
+								if (result[1] == 1){
+		                   this.getData(result[0]).done(this.handleData.bind(this));
+		             }
+							}
+							else{
+								//display message that game details will be revealed at 12
+								alert("Game Details Published at 12 EST");
+
+							}
+
+
+	   	 	  	});
+					}
 
   		});
 
@@ -337,9 +376,46 @@ class QuizComponent extends Component {
                              if(!error){
 
                                  simpleContract.methods.loadPage("0x81b6db6cb74165A4B5027Af9FAbc3CAFc9EAE030").call((error, result) => {
-                          	 			//this.otherFunction(result);
 
-                                  this.getData(result[0]).done(this.handleData.bind(this));
+
+																	var initializedTime = new Date(result[2]*1000);
+																	//var initializedTime = new Date(2018, 4, 31, 10, 0, 0, 0);
+														      var currentTime   = new Date();
+
+														      var timeOfNext12  = new Date();
+														      var timeTillNext12 = new Date();
+
+														      timeOfNext12.setFullYear(initializedTime.getFullYear());
+														      timeOfNext12.setMonth(initializedTime.getMonth());
+														      timeOfNext12.setHours(12);
+														      timeOfNext12.setMinutes(0);
+														      timeOfNext12.setSeconds(0);
+														      timeOfNext12.setMilliseconds(0);
+
+														      if(initializedTime.getHours() < 9){ //game was initialized in the morning
+														        timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
+														      }
+														      else{ //game was initialized in the afternoon or evening
+														        timeOfNext12.setDate(initializedTime.getDate() + 1);
+														      }
+
+														      //alert(timeOfNext12);
+														      //alert(currentTime);
+
+														      timeTillNext12 = timeOfNext12 - currentTime;
+														      //alert(timeTillNext12);
+
+																	if(timeTillNext12 < 0){
+																		if (result[1] == 1){
+												                   this.getData(result[0]).done(this.handleData.bind(this));
+												             }
+																	}
+																	else{
+																		//display message that game details will be revealed at 12
+																		alert("Game Details Published at 12 EST");
+
+																	}
+
 
                           	 	  });
 
@@ -352,7 +428,7 @@ class QuizComponent extends Component {
                                    alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
                                  }
 																 else{
-																	 
+
 																	 alert(errorString);
 																 }
                            }

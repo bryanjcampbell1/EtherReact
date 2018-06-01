@@ -36,12 +36,7 @@ var abiData = [
 		"constant": false,
 		"inputs": [],
 		"name": "buyIn",
-		"outputs": [
-			{
-				"name": "winnerAddress_",
-				"type": "address"
-			}
-		],
+		"outputs": [],
 		"payable": true,
 		"stateMutability": "payable",
 		"type": "function"
@@ -130,6 +125,10 @@ var abiData = [
 			{
 				"name": "paid_",
 				"type": "bool"
+			},
+			{
+				"name": "gameStartTime_",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -145,7 +144,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x68ff225ac00d859bf0c88815f767e93d46a0a26e";
+var contractAddress = "0x739e8ad301bbc778cc4db51c4d8664f9431188f4";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
