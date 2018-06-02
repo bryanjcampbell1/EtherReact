@@ -350,12 +350,16 @@ class QuizComponent extends Component {
 
 
 				      timeTillNext12 = timeOfNext12 - currentTime;
-				     // alert(timeTillNext12);
+				      //alert(timeTillNext12);
 
-							if(timeTillNext12 < 0){
+							if(timeTillNext12 < 0){ //game is live
+								//alert("yo");
+
 								this.setState({
 									gameLive: true
 								});
+
+								//alert(result[1]);
 								if (result[1] == 1){
 		                   this.getData(result[0]).done(this.handleData.bind(this));
 
@@ -388,52 +392,60 @@ class QuizComponent extends Component {
                            }, (error, result) => {
                              if(!error){
 
-                                 simpleContract.methods.loadPage("0x81b6db6cb74165A4B5027Af9FAbc3CAFc9EAE030").call((error, result) => {
+
+															 simpleContract.methods.loadPage("0xAf38454307fA6A9C9Dd57787B8Faf1D14F973202").call((error, result) => {
+																 var initializedTime = new Date(result[2]*1000);
+																 //var initializedTime = new Date(2018, 4, 31, 10, 0, 0, 0);
+																 var currentTime   = new Date();
+
+																 var timeOfNext12  = new Date();
+																 var timeTillNext12 = new Date();
+
+																 timeOfNext12.setFullYear(initializedTime.getFullYear());
+																 timeOfNext12.setMonth(initializedTime.getMonth());
+																 timeOfNext12.setHours(12);
+																 timeOfNext12.setMinutes(0);
+																 timeOfNext12.setSeconds(0);
+																 timeOfNext12.setMilliseconds(0);
+
+																 if(initializedTime.getHours() < 12){ //game was initialized in the morning
+																	 timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
+																 }
+																 else{ //game was initialized in the afternoon or evening
+																	 timeOfNext12.setDate(initializedTime.getDate() + 1);
+																 }
 
 
-																	var initializedTime = new Date(result[2]*1000);
-																	//var initializedTime = new Date(2018, 4, 31, 10, 0, 0, 0);
-														      var currentTime   = new Date();
 
-														      var timeOfNext12  = new Date();
-														      var timeTillNext12 = new Date();
+																 timeTillNext12 = timeOfNext12 - currentTime;
+																 //alert(timeTillNext12);
 
-														      timeOfNext12.setFullYear(initializedTime.getFullYear());
-														      timeOfNext12.setMonth(initializedTime.getMonth());
-														      timeOfNext12.setHours(12);
-														      timeOfNext12.setMinutes(0);
-														      timeOfNext12.setSeconds(0);
-														      timeOfNext12.setMilliseconds(0);
+																 if(timeTillNext12 < 0){ //game is live
+																	 //alert("yo");
 
-														      if(initializedTime.getHours() < 12){ //game was initialized in the morning
-														        timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
-														      }
-														      else{ //game was initialized in the afternoon or evening
-														        timeOfNext12.setDate(initializedTime.getDate() + 1);
-														      }
-
-														      //alert(timeOfNext12);
-														      //alert(currentTime);
-
-														      timeTillNext12 = timeOfNext12 - currentTime;
-														      //alert(timeTillNext12);
-
-																	if(timeTillNext12 < 0){
-																		this.setState({
-																			gameLive: true
-																		});
-																		if (result[1] == 1){
-												                   this.getData(result[0]).done(this.handleData.bind(this));
-												             }
-																	}
-																	else{
-																		//display message that game details will be revealed at 12
-																		alert("Game Details Published at 12 EST");
-
-																	}
+																	 this.setState({
+																		 gameLive: true
+																	 });
 
 
-                          	 	  });
+																	this.getData(result[0]).done(this.handleData.bind(this));
+
+
+																 }
+																 else{
+																	 //display message that game details will be revealed at 12
+																	 alert("Game Details Published at 12 EST");
+
+																 }
+
+
+
+
+
+
+
+															 });
+
 
                                }
                              else{
