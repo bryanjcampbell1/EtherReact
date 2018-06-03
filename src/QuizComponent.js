@@ -164,8 +164,7 @@ function QuizDisplay(props) {
   }
 	else if ((userHasInFactPaid == true) && (gameIsOn == false)) { //user has paid and game is not live
     return <div>
-						<p>Congrats! You have registered. Game details live at 12 EST</p>
-            <Preview />
+            <Registered />
           </div>;
   }
   else { //user has not paid
@@ -286,7 +285,20 @@ render() {
 class Preview extends React.Component {
   render() {
     return (
-      <div style={{ height: '10%' }}>
+      <div>
+				<p>Join the Game! Get Puzzle Description By Clicking Above!  Buy in is 0.1 ETH </p>
+				<p>Solve the puzzle first and win the Ether in the contract!</p>
+				<p>For more details check out the Example page and source code{"\n"} {"\n"}</p>
+      </div>
+    );
+  }
+}
+
+class Registered extends React.Component {
+  render() {
+    return (
+			<div>
+				<h1>Congrats! You have registered. Game details live at 12 EST</h1>
       </div>
     );
   }
@@ -508,12 +520,9 @@ class QuizComponent extends Component {
       return (
         <div className="TestingElement" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
         <Well className="text-center" style={{width: '95%', }}>
-          <p>Join a Game! Get Puzzle Description By Clicking Below!  Buy in is 0.1 ETH </p>
-          <p>Solve the puzzle first and win the Ether in the contract!</p>
-          <p>For more details check out the Example page and source code{"\n"} {"\n"}</p>
-          <Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
+					<Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
           <QuizDisplay paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
         </Well>
         </div>
