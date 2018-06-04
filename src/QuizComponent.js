@@ -182,7 +182,7 @@ render() {
   if(this.props.step2 == "") {
     return(
       <div>
-				<h3>Congrats you have joined the game!{"\n"}  Follow the steps below to solve the puzzle! {"\n"}Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab{"\n"} Claim your ETH from this account!</h3>
+				<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
         <p>Step 1: {this.props.step1}</p>
       </div>
     );
@@ -190,6 +190,7 @@ render() {
   else if(this.props.step3 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
     </div>
@@ -198,6 +199,7 @@ render() {
   else if(this.props.step4 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -207,6 +209,7 @@ render() {
   else if(this.props.step5 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -217,6 +220,7 @@ render() {
   else if(this.props.step6 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -228,6 +232,7 @@ render() {
   else if(this.props.step7 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -240,6 +245,7 @@ render() {
   else if(this.props.step8 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -253,6 +259,7 @@ render() {
   else if(this.props.step9 == "") {
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -267,6 +274,7 @@ render() {
   else{
     return(
     <div>
+			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
       <p>Step 1: {this.props.step1}</p>
       <p>Step 2: {this.props.step2}</p>
       <p>Step 3: {this.props.step3}</p>
@@ -287,7 +295,7 @@ class Preview extends React.Component {
   render() {
     return (
       <div>
-				<p>Join the Game! Get Puzzle Description By Clicking Above!  Buy in is 0.1 ETH </p>
+				<p>Buy in and Get Puzzle Description By Clicking Above! Buy in is 0.1 ETH </p>
 				<p>Solve the puzzle first and win the Ether in the contract!</p>
 				<p>For more details check out the Example page and source code{"\n"} {"\n"}</p>
       </div>
