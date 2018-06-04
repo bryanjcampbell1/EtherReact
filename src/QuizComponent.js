@@ -182,6 +182,7 @@ render() {
   if(this.props.step2 == "") {
     return(
       <div>
+				<h3>Congrats you have joined the game!{"\n"}  Follow the steps below to solve the puzzle! {"\n"}Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab{"\n"} Claim your ETH from this account!</h3>
         <p>Step 1: {this.props.step1}</p>
       </div>
     );
