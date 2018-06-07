@@ -30,6 +30,7 @@ $Step7;
 $Step8;
 $Step9;
 $Step10;
+$picturePath;
 
 $Description = array();
 
@@ -54,8 +55,9 @@ while($row = $result->fetch_assoc()){
 	$Step8  =  $row['H_Text'] ;
 	$Step9  =  $row['I_Text'] ;
 	$Step10 =  $row['J_Text'] ;
+  $picturePath = $row['picturePath'] ;
 
-	$Description  = array($Address,$Step1,$Step2,$Step3,$Step4,$Step5,$Step6,$Step7,$Step8,$Step9,$Step10);
+	$Description  = array($Address,$Step1,$Step2,$Step3,$Step4,$Step5,$Step6,$Step7,$Step8,$Step9,$Step10,$picturePath);
 	//$Description  = array("yo","yo","yo","yo","yo");
 }
 

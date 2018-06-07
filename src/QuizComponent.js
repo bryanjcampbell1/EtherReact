@@ -159,7 +159,7 @@ function QuizDisplay(props) {
 
   if ((userHasInFactPaid == true) && (gameIsOn == true)) { //user has paid and game is live
     return <div>
-            <Details win={props.winner} step1={props.step1} step2={props.step2} step3={props.step3} step4={props.step4} step5={props.step5} step6={props.step6} step7={props.step7} step8={props.step8} step9={props.step9} />
+            <Details win={props.winner} step1={props.step1} step2={props.step2} step3={props.step3} step4={props.step4} step5={props.step5} step6={props.step6} step7={props.step7} step8={props.step8} step9={props.step9} picturePath={props.picturePath}/>
           </div>;
   }
 	else if ((userHasInFactPaid == true) && (gameIsOn == false)) { //user has paid and game is not live
@@ -179,7 +179,20 @@ function QuizDisplay(props) {
 class Details extends React.Component {
   //const win = props.win;
 render() {
-  if(this.props.step2 == "") {
+	if(this.props.picturePath != "") {
+		var path = "/img/"+this.props.picturePath;
+    return(
+      <div>
+				<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
+        <img src= {path} />
+				<p>{this.props.step1}</p>
+				<p>{this.props.step2}</p>
+				<p>{this.props.step3}</p>
+				<p>{this.props.step4}</p>
+      </div>
+    );
+  }
+  else if(this.props.step2 == "") {
     return(
       <div>
 				<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
@@ -256,21 +269,6 @@ render() {
     </div>
     );
   }
-  else if(this.props.step9 == "") {
-    return(
-    <div>
-			<div style={{fontWeight: 'bold'}}>Congrats you have joined the game! <br /> Paste puzzle answer into Wallet Adress Generator on the Claim Prize tab <br /> Sign into the wallet corresponding to the private key generated <br /> Paste your original address into Claim Ether text field and get prize!<br /><br />Puzzle Description</div>
-      <p>Step 1: {this.props.step1}</p>
-      <p>Step 2: {this.props.step2}</p>
-      <p>Step 3: {this.props.step3}</p>
-      <p>Step 4: {this.props.step4}</p>
-      <p>Step 5: {this.props.step5}</p>
-      <p>Step 6: {this.props.step6}</p>
-      <p>Step 7: {this.props.step7}</p>
-      <p>Step 8: {this.props.step8}</p>
-    </div>
-    );
-  }
   else{
     return(
     <div>
@@ -283,10 +281,10 @@ render() {
       <p>Step 6: {this.props.step6}</p>
       <p>Step 7: {this.props.step7}</p>
       <p>Step 8: {this.props.step8}</p>
-      <p>Step 9: {this.props.step9}</p>
     </div>
     );
   }
+
 
 }
 }
@@ -332,7 +330,8 @@ class QuizComponent extends Component {
                 step6: "",
                 step7: "",
                 step8: "",
-                step9: ""
+                step9: "",
+								picturePath: ""
               };
 
   }
@@ -512,14 +511,14 @@ class QuizComponent extends Component {
       step6: descriptionArray[6],
       step7: descriptionArray[7],
       step8: descriptionArray[8],
-      step9: descriptionArray[9]
+      step9: descriptionArray[9],
+			picturePath: descriptionArray[11]
     });
   }
 
   render() {//stop
     var contractAddress = this.props.contractAddress;
     var winningAddress = this.state.winner;
-
 
 
     if (winningAddress != ""){
@@ -532,7 +531,7 @@ class QuizComponent extends Component {
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
 					<Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
-          <QuizDisplay paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} step9={this.state.step9} />
+          <QuizDisplay paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} picturePath={this.state.picturePath} />
         </Well>
         </div>
 
