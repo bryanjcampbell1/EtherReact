@@ -367,10 +367,8 @@ class QuizComponent extends Component {
 				        timeOfNext12.setDate(initializedTime.getDate() + 1);
 				      }
 
-
-
 				      timeTillNext12 = timeOfNext12 - currentTime;
-				      //alert(timeTillNext12);
+				      alert(timeTillNext12);
 
 							if(timeTillNext12 < 0){ //game is live
 								//alert("yo");

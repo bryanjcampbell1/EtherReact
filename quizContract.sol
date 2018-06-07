@@ -3,6 +3,8 @@ pragma solidity ^0.4.11;
 //in real contract add condition that now > gameStartTime in order
 //to call payout
 
+//smart for contract creator to be able to withdraw funds
+
 contract quizContract {
 
 //-------------------------GLOBALS--------------------------------//
@@ -44,7 +46,7 @@ contract quizContract {
 
         //give roughly an hour window for player to join game
         //before they can submit answer or ask for refund
-        gameStartTime = now + 3600*4;
+        gameStartTime = now;
 
         //address eliptically generated from hashed answer
         winnerAddress = 0x28944f7d5B83D073988994bd57DfEe21Be39Cb7B;
@@ -52,7 +54,7 @@ contract quizContract {
         authorAddress = msg.sender;
     }
 
-    function buyIn() public payable {
+    function buyIn() public payable  {
         bool paid = false;
 
         //check if player has already paid
@@ -70,6 +72,7 @@ contract quizContract {
         addPlayer(msg.sender);
 
         playerNumber += 1;
+
     }
 
     function playerRefund() public {
@@ -143,18 +146,26 @@ contract quizContract {
         gameNumber = gameNumber + 1;
         winnerAddress = winningAddressArray[gameNumber];
         paidPlayers.length = 0;
-        gameStartTime = now + 3600*4;
+        gameStartTime = now;
 
     }
 
     //Get data
-    function getGameNumber() public view returns (uint gameNumber_)
-    {
-        gameNumber_ = gameNumber;
-    }
-    function getWinnerAddress() public view returns (address winnerAddress_)
+    function loadPage(address userAddress) public view returns (address winnerAddress_, bool paid_, uint gameStartTime_)
     {
         winnerAddress_ = winnerAddress;
+        bool paid = false;
+
+        //check if player has paid
+        for (uint i=0; i<paidPlayers.length; i++) {
+          if (paidPlayers[i] == userAddress){
+              paid = true;
+          }
+        }
+        paid_ = paid;
+        gameStartTime_ = gameStartTime;
+
     }
+
 
 }
