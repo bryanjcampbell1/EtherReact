@@ -23,15 +23,6 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "allowRefund",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
 		"name": "buyIn",
 		"outputs": [],
 		"payable": true,
@@ -40,10 +31,23 @@ var abiData = [
 	},
 	{
 		"constant": false,
+		"inputs": [],
+		"name": "PauseGameAllowRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [
 			{
 				"name": "payTo",
 				"type": "address"
+			},
+			{
+				"name": "next12",
+				"type": "uint256"
 			}
 		],
 		"name": "payout",
@@ -56,6 +60,15 @@ var abiData = [
 		"constant": false,
 		"inputs": [],
 		"name": "playerRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "ResumeGameAfterRefund",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -124,8 +137,8 @@ var abiData = [
 				"type": "bool"
 			},
 			{
-				"name": "gameStartTime_",
-				"type": "uint256"
+				"name": "gameOn_",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -133,7 +146,7 @@ var abiData = [
 		"type": "function"
 	}
 ];
-var contractAddress = "0x739e8ad301bbc778cc4db51c4d8664f9431188f4";
+var contractAddress = "0x7337481cdf4fb9853b4c1960c3b682b5d6b8545a";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 

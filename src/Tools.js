@@ -1,3 +1,5 @@
+//instead of time to next 12 realy need time to next12EST
+
 import React, { Component } from 'react';
 import { Navbar, Nav, NavItem, Well, Button, FormGroup,ControlLabel,FormControl,HelpBlock } from 'react-bootstrap';
 import EthUtil from 'ethereumjs-util';
@@ -26,15 +28,6 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "allowRefund",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
 		"name": "buyIn",
 		"outputs": [],
 		"payable": true,
@@ -43,10 +36,23 @@ var abiData = [
 	},
 	{
 		"constant": false,
+		"inputs": [],
+		"name": "PauseGameAllowRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [
 			{
 				"name": "payTo",
 				"type": "address"
+			},
+			{
+				"name": "next12",
+				"type": "uint256"
 			}
 		],
 		"name": "payout",
@@ -59,6 +65,15 @@ var abiData = [
 		"constant": false,
 		"inputs": [],
 		"name": "playerRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "ResumeGameAfterRefund",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -127,8 +142,8 @@ var abiData = [
 				"type": "bool"
 			},
 			{
-				"name": "gameStartTime_",
-				"type": "uint256"
+				"name": "gameOn_",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -144,7 +159,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x739e8ad301bbc778cc4db51c4d8664f9431188f4";
+var contractAddress = "0x7337481cdf4fb9853b4c1960c3b682b5d6b8545a";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -205,7 +220,27 @@ class Tools extends Component {
           if(error != null)
               console.log("Couldnt get accounts");
 
-         simpleContract.methods.payout(textValue).send({from: result[0]}, function(error, result){
+
+				      var currentTime   = new Date();
+				      var timeOfNext12  = new Date();
+
+				      timeOfNext12.setFullYear(currentTime.getFullYear());
+				      timeOfNext12.setMonth(currentTime.getMonth());
+				      timeOfNext12.setHours(12);
+				      timeOfNext12.setMinutes(0);
+				      timeOfNext12.setSeconds(0);
+				      timeOfNext12.setMilliseconds(0);
+
+				      if(currentTime.getHours() < 12){ //game was initialized in the morning
+				        timeOfNext12.setDate(currentTime.getDate());  //next 12 is same date
+				      }
+				      else{ //game was initialized in the afternoon or evening
+				        timeOfNext12.setDate(currentTime.getDate() + 1);
+				      }
+
+							timeOfNext12 = timeOfNext12/1000;
+
+         simpleContract.methods.payout(textValue,timeOfNext12).send({from: result[0]}, function(error, result){
 					 if(!error){
 							 console.log(JSON.stringify(result));
 						 }

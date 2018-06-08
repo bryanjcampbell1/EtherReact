@@ -28,15 +28,6 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "allowRefund",
-		"outputs": [],
-		"payable": false,
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"constant": false,
-		"inputs": [],
 		"name": "buyIn",
 		"outputs": [],
 		"payable": true,
@@ -45,10 +36,23 @@ var abiData = [
 	},
 	{
 		"constant": false,
+		"inputs": [],
+		"name": "PauseGameAllowRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
 		"inputs": [
 			{
 				"name": "payTo",
 				"type": "address"
+			},
+			{
+				"name": "next12",
+				"type": "uint256"
 			}
 		],
 		"name": "payout",
@@ -61,6 +65,15 @@ var abiData = [
 		"constant": false,
 		"inputs": [],
 		"name": "playerRefund",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "ResumeGameAfterRefund",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -129,8 +142,8 @@ var abiData = [
 				"type": "bool"
 			},
 			{
-				"name": "gameStartTime_",
-				"type": "uint256"
+				"name": "gameOn_",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -148,7 +161,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x739e8ad301bbc778cc4db51c4d8664f9431188f4";
+var contractAddress = "0x7337481cdf4fb9853b4c1960c3b682b5d6b8545a";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -346,31 +359,9 @@ class QuizComponent extends Component {
 					else {
 						simpleContract.methods.loadPage(result[0]).call((error, result) => {
 
-							var initializedTime = new Date(result[2]*1000);
-							//var initializedTime = new Date(2018, 4, 31, 10, 0, 0, 0);
-				      var currentTime   = new Date();
+							var gameOn = result[2];
 
-				      var timeOfNext12  = new Date();
-				      var timeTillNext12 = new Date();
-
-				      timeOfNext12.setFullYear(initializedTime.getFullYear());
-				      timeOfNext12.setMonth(initializedTime.getMonth());
-				      timeOfNext12.setHours(12);
-				      timeOfNext12.setMinutes(0);
-				      timeOfNext12.setSeconds(0);
-				      timeOfNext12.setMilliseconds(0);
-
-				      if(initializedTime.getHours() < 12){ //game was initialized in the morning
-				        timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
-				      }
-				      else{ //game was initialized in the afternoon or evening
-				        timeOfNext12.setDate(initializedTime.getDate() + 1);
-				      }
-
-				      timeTillNext12 = timeOfNext12 - currentTime;
-				      alert(timeTillNext12);
-
-							if(timeTillNext12 < 0){ //game is live
+							if(gameOn == true){ //game is live
 								//alert("yo");
 
 								this.setState({
@@ -412,39 +403,14 @@ class QuizComponent extends Component {
 
 
 															 simpleContract.methods.loadPage("0xAf38454307fA6A9C9Dd57787B8Faf1D14F973202").call((error, result) => {
-																 var initializedTime = new Date(result[2]*1000);
-																 //var initializedTime = new Date(2018, 4, 31, 10, 0, 0, 0);
-																 var currentTime   = new Date();
 
-																 var timeOfNext12  = new Date();
-																 var timeTillNext12 = new Date();
+																 var gameOn = result[2];
 
-																 timeOfNext12.setFullYear(initializedTime.getFullYear());
-																 timeOfNext12.setMonth(initializedTime.getMonth());
-																 timeOfNext12.setHours(12);
-																 timeOfNext12.setMinutes(0);
-																 timeOfNext12.setSeconds(0);
-																 timeOfNext12.setMilliseconds(0);
-
-																 if(initializedTime.getHours() < 12){ //game was initialized in the morning
-																	 timeOfNext12.setDate(initializedTime.getDate());  //next 12 is same date
-																 }
-																 else{ //game was initialized in the afternoon or evening
-																	 timeOfNext12.setDate(initializedTime.getDate() + 1);
-																 }
-
-
-
-																 timeTillNext12 = timeOfNext12 - currentTime;
-																 //alert(timeTillNext12);
-
-																 if(timeTillNext12 < 0){ //game is live
-																	 //alert("yo");
+									 							 if(gameOn == true){
 
 																	 this.setState({
 																		 gameLive: true
 																	 });
-
 
 																	this.getData(result[0]).done(this.handleData.bind(this));
 
@@ -455,12 +421,6 @@ class QuizComponent extends Component {
 																	 alert("Game Details Published at 12 EST");
 
 																 }
-
-
-
-
-
-
 
 															 });
 
