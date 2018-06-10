@@ -355,14 +355,14 @@ class TimeBanner extends React.Component {
 			var gameStartTime =parseMillisecondsIntoReadableTime(this.props.timeRemaining);
 	    return(
 				<div style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>
-					<h1>Game Details Live in {gameStartTime}    Register Now!</h1>
+					<h4>Game Details Live in {gameStartTime}    Register Now!</h4>
 				</div>
 	    );
 	  }
 		else {
 			return(
 	      <div style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>
-					<h1>Game is Live! Register Now!</h1>
+					<h4>Game is Live! Register Now!</h4>
 				</div>
 
 	    );
@@ -446,7 +446,24 @@ class QuizComponent extends Component {
 
   		});
 
+		}
+	componentDidMount() {
+		this.intervalID = setInterval(
+			() => this.tick(),
+			1000
+		);
 	}
+	componentWillUnmount() {
+		clearInterval(this.intervalID);
+	}
+	tick() {
+		var timeRemaining = this.state.timeLeft - 1000;
+		this.setState({
+			timeLeft : timeRemaining
+		});
+
+}
+
 
   handleClick(e) {
 
@@ -536,14 +553,6 @@ class QuizComponent extends Component {
     });
   }
 
-	tick() {
-		var timeRemaining = this.state.timeLeft - 1000;
-		this.setState({
-			timeLeft : timeRemaining
-		});
-
-}
-
   render() {//stop
 		//setInterval(this.tick, 1000);
 
@@ -557,8 +566,8 @@ class QuizComponent extends Component {
 
       return (
         <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-				<TimeBanner timeRemaining={this.state.timeLeft}/>
 				<Well className="text-center" style={{width: '95%', }}>
+					<TimeBanner timeRemaining={this.state.timeLeft}/>
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
 					<Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
