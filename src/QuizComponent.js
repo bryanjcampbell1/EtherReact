@@ -355,14 +355,14 @@ class TimeBanner extends React.Component {
 			var gameStartTime =parseMillisecondsIntoReadableTime(this.props.timeRemaining);
 	    return(
 				<div style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>
-					<h4>Game Details Live in {gameStartTime}    Register Now!</h4>
+					<h4>Game Details Live in {gameStartTime}    		Register Now!</h4>
 				</div>
 	    );
 	  }
 		else {
 			return(
 	      <div style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>
-					<h4>Game is Live! Register Now!</h4>
+					<h4>Game is Live! 		Register Now!</h4>
 				</div>
 
 	    );
@@ -456,6 +456,7 @@ class QuizComponent extends Component {
 	componentWillUnmount() {
 		clearInterval(this.intervalID);
 	}
+
 	tick() {
 		var timeRemaining = this.state.timeLeft - 1000;
 		this.setState({
