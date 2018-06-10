@@ -144,6 +144,10 @@ var abiData = [
 			{
 				"name": "gameOn_",
 				"type": "bool"
+			},
+			{
+				"name": "gameStartTime_",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -161,9 +165,30 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x7337481cdf4fb9853b4c1960c3b682b5d6b8545a";
+var contractAddress = "0x5fe56cb8d0f917bee8b41e167a66f8d78e59df99";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
+
+function parseMillisecondsIntoReadableTime(milliseconds){
+  //Get hours from milliseconds
+  var hours = milliseconds / (1000*60*60);
+  var absoluteHours = Math.floor(hours);
+  var h = absoluteHours > 9 ? absoluteHours : '0' + absoluteHours;
+
+  //Get remainder from hours and convert to minutes
+  var minutes = (hours - absoluteHours) * 60;
+  var absoluteMinutes = Math.floor(minutes);
+  var m = absoluteMinutes > 9 ? absoluteMinutes : '0' +  absoluteMinutes;
+
+  //Get remainder from minutes and convert to seconds
+  var seconds = (minutes - absoluteMinutes) * 60;
+  var absoluteSeconds = Math.floor(seconds);
+  var s = absoluteSeconds > 9 ? absoluteSeconds : '0' + absoluteSeconds;
+
+
+  return h + ':' + m + ':' + s;
+}
+
 
 function QuizDisplay(props) {
   const userHasInFactPaid = props.paid;
@@ -324,6 +349,28 @@ class Registered extends React.Component {
   }
 }
 
+class TimeBanner extends React.Component {
+	render() {
+		if(this.props.timeRemaining >=0) {
+			var gameStartTime =parseMillisecondsIntoReadableTime(this.props.timeRemaining);
+	    return(
+				<div style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>
+					<h1>Game Details Live in {gameStartTime}    Register Now!</h1>
+				</div>
+	    );
+	  }
+		else {
+			return(
+	      <div style={{fontWeight: 'bold', fontSize: '15px', textAlign: 'center'}}>
+					<h1>Game is Live! Register Now!</h1>
+				</div>
+
+	    );
+		}
+
+  }
+}
+
 class QuizComponent extends Component {
 
   constructor(props) {
@@ -361,25 +408,38 @@ class QuizComponent extends Component {
 
 							var gameOn = result[2];
 
-							if(gameOn == true){ //game is live
-								//alert("yo");
+							//initialize clock
+							var currentTime   = new Date();
+							var time = result[3]*1000 - currentTime; //miliseconds until game
+
+
+
+							if((gameOn == true)&&(result[1] == 1)){ //game is live and paid
 
 								this.setState({
-									gameLive: true
+									gameLive: true,
+									paid: true,
+									timeLeft: time
 								});
 
-								//alert(result[1]);
-								if (result[1] == 1){
-		                   this.getData(result[0]).done(this.handleData.bind(this));
+								this.getData(result[0]).done(this.handleData.bind(this));
 
-		             }
+							}
+							else if((gameOn != true)&&(result[1] == 1)){
+								this.setState({
+									paid: true,
+									timeLeft: time
+								});
+
 							}
 							else{
-								//display message that game details will be revealed at 12
-								alert("Game Details Published at 12 EST");
+								this.setState({
+									timeLeft: time
+								});
 
 							}
 
+							//setInterval(this.tick, 1000);
 
 	   	 	  	});
 					}
@@ -418,8 +478,10 @@ class QuizComponent extends Component {
 																 }
 																 else{
 																	 //display message that game details will be revealed at 12
-																	 alert("Game Details Published at 12 EST");
-
+																	 //alert("Game Details Published at 12 EST");
+																	 this.setState({
+																		 paid: true
+																	 });
 																 }
 
 															 });
@@ -474,7 +536,17 @@ class QuizComponent extends Component {
     });
   }
 
+	tick() {
+		var timeRemaining = this.state.timeLeft - 1000;
+		this.setState({
+			timeLeft : timeRemaining
+		});
+
+}
+
   render() {//stop
+		//setInterval(this.tick, 1000);
+
     var contractAddress = this.props.contractAddress;
     var winningAddress = this.state.winner;
 
@@ -484,8 +556,9 @@ class QuizComponent extends Component {
     }
 
       return (
-        <div className="TestingElement" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-        <Well className="text-center" style={{width: '95%', }}>
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+				<TimeBanner timeRemaining={this.state.timeLeft}/>
+				<Well className="text-center" style={{width: '95%', }}>
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
 					<Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>

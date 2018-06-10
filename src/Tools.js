@@ -144,6 +144,10 @@ var abiData = [
 			{
 				"name": "gameOn_",
 				"type": "bool"
+			},
+			{
+				"name": "gameStartTime_",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -159,7 +163,7 @@ var gasPrice = 40000000000;
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x7337481cdf4fb9853b4c1960c3b682b5d6b8545a";
+var contractAddress = "0x5fe56cb8d0f917bee8b41e167a66f8d78e59df99";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -224,21 +228,25 @@ class Tools extends Component {
 				      var currentTime   = new Date();
 				      var timeOfNext12  = new Date();
 
+							var timeShift = currentTime.getTimezoneOffset()/60;
+
 				      timeOfNext12.setFullYear(currentTime.getFullYear());
 				      timeOfNext12.setMonth(currentTime.getMonth());
-				      timeOfNext12.setHours(12);
+				      timeOfNext12.setHours(16 + timeShift);
 				      timeOfNext12.setMinutes(0);
 				      timeOfNext12.setSeconds(0);
 				      timeOfNext12.setMilliseconds(0);
 
-				      if(currentTime.getHours() < 12){ //game was initialized in the morning
+							//Time of next game is 12 EST = 16 GMT
+
+				      if(currentTime.getHours() < 16 + timeShift) { //game was initialized in the morning
 				        timeOfNext12.setDate(currentTime.getDate());  //next 12 is same date
 				      }
 				      else{ //game was initialized in the afternoon or evening
 				        timeOfNext12.setDate(currentTime.getDate() + 1);
 				      }
 
-							timeOfNext12 = timeOfNext12/1000;
+							timeOfNext12 = timeOfNext12/1000 ;
 
          simpleContract.methods.payout(textValue,timeOfNext12).send({from: result[0]}, function(error, result){
 					 if(!error){
