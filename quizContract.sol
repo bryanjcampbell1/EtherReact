@@ -5,6 +5,9 @@ pragma solidity ^0.4.11;
 
 //smart for contract creator to be able to withdraw funds
 
+//would be good for creator to see winningAddressArray to make sure
+//it is being populated correctly
+
 contract quizContract {
 
 //-------------------------GLOBALS--------------------------------//
@@ -65,7 +68,7 @@ contract quizContract {
         }
 
         require(!paid); // require each address buy in only once
-        require(gameOn == true); // require game is active
+        //require(gameOn == true); // require game is active
         require(msg.value == buyInAmount);  // require correct buy in is paid
 
         //set address to paid
@@ -98,13 +101,24 @@ contract quizContract {
 
     }
 
-    function allowRefund() public {
+    function PauseGameAllowRefund() public {
          //must be the contract's author to trigger function
          //turn game off
          //allow refund if puzzle is in error
         require(msg.sender == authorAddress);
         gameOn = false;
         puzzleError = true;
+    }
+
+    function ResumeGameAfterRefund() public {
+
+        require(msg.sender == authorAddress);
+        gameOn = true;
+        puzzleError = false;
+        gameNumber = gameNumber + 1;
+        winnerAddress = winningAddressArray[gameNumber];
+        paidPlayers.length = 0;
+
     }
 
     function addAnswer(address answer) public {
@@ -114,7 +128,7 @@ contract quizContract {
 
     }
 
-    function payout(address payTo) public{
+    function payout(address payTo, uint next12) public{
       require(now >= gameStartTime);
 
         bool paid = false;
@@ -133,7 +147,7 @@ contract quizContract {
 
         //PAYOUTS
         //worry about gas being too high to pay winner?
-        //need to test th is
+        //need to test this
         var authorPay = this.balance/10;
         var winnerPay = 9*this.balance/10;
 
@@ -146,15 +160,16 @@ contract quizContract {
         gameNumber = gameNumber + 1;
         winnerAddress = winningAddressArray[gameNumber];
         paidPlayers.length = 0;
-        gameStartTime = now;
+        gameStartTime = next12;
 
     }
 
     //Get data
-    function loadPage(address userAddress) public view returns (address winnerAddress_, bool paid_, uint gameStartTime_)
+    function loadPage(address userAddress) public view returns (address winnerAddress_, bool paid_, bool gameOn_, uint gameStartTime_)
     {
         winnerAddress_ = winnerAddress;
         bool paid = false;
+        bool gameActive = false;
 
         //check if player has paid
         for (uint i=0; i<paidPlayers.length; i++) {
@@ -163,9 +178,18 @@ contract quizContract {
           }
         }
         paid_ = paid;
+
+        if(now > gameStartTime){
+            gameActive = true;
+        }
+        paid_ = paid;
+        gameOn_ = gameActive ;
         gameStartTime_ = gameStartTime;
 
     }
+
+
+}
 
 
 }

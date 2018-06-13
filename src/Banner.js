@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import logo from './ether5.png';
+import logo from './ether6.png';
 
 
 class Banner extends React.Component {

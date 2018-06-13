@@ -150,7 +150,7 @@ var abiData = [
 		"type": "function"
 	}
 ];
-var contractAddress = "0x5fe56cb8d0f917bee8b41e167a66f8d78e59df99";
+var contractAddress = "0xa9d62578f2bd2b1497ff8d59a33af3493e584dd7";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 

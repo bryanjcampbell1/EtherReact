@@ -158,14 +158,14 @@ var abiData = [
 
 var ethVal = 100000000000000000;
 var gasVal = 25000;
-var gasPrice = 40000000000;
+var gasPrice = 10000000000;
 
 var ethHex = '0x' + ethVal.toString(16);
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x5fe56cb8d0f917bee8b41e167a66f8d78e59df99";
+var contractAddress = "0xa9d62578f2bd2b1497ff8d59a33af3493e584dd7";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -343,7 +343,8 @@ class Registered extends React.Component {
   render() {
     return (
 			<div>
-				<h1>Congrats! You have registered. Game details live at 12 EST</h1>
+				<h3>Congrats! You have registered! </h3>
+				<h3>Quiz Details Will Appear When Game is Live </h3>
       </div>
     );
   }
@@ -419,7 +420,8 @@ class QuizComponent extends Component {
 								this.setState({
 									gameLive: true,
 									paid: true,
-									timeLeft: time
+									timeLeft: time,
+									winner: result[0]
 								});
 
 								this.getData(result[0]).done(this.handleData.bind(this));
@@ -428,18 +430,18 @@ class QuizComponent extends Component {
 							else if((gameOn != true)&&(result[1] == 1)){
 								this.setState({
 									paid: true,
-									timeLeft: time
+									timeLeft: time,
+									winner: result[0]
 								});
 
 							}
 							else{
 								this.setState({
-									timeLeft: time
+									timeLeft: time,
+									winner: result[0]
 								});
 
 							}
-
-							//setInterval(this.tick, 1000);
 
 	   	 	  	});
 					}
@@ -459,9 +461,22 @@ class QuizComponent extends Component {
 
 	tick() {
 		var timeRemaining = this.state.timeLeft - 1000;
-		this.setState({
-			timeLeft : timeRemaining
-		});
+		if(timeRemaining < 0){
+			this.setState({
+				timeLeft : timeRemaining,
+				gameLive: true
+			});
+
+			if((this.state.paid ==true) && (this.state.step1 =="")){
+				this.getData(this.state.winner).done(this.handleData.bind(this));
+			}
+		}
+		else{
+			this.setState({
+				timeLeft : timeRemaining
+			});
+		}
+
 
 }
 
@@ -475,38 +490,45 @@ class QuizComponent extends Component {
 					}
        simpleContract.methods.buyIn().send({
                                from: result[0],
+															 gasPrice: gpHex,
                               value: ethHex
                            }, (error, result) => {
-                             if(!error){
+                             if(!error){ //no problem buying in
 
 
 															 simpleContract.methods.loadPage("0xAf38454307fA6A9C9Dd57787B8Faf1D14F973202").call((error, result) => {
 
-																 var gameOn = result[2];
+																 if(!error){ //no problem getting current game info
 
-									 							 if(gameOn == true){
+																	 var gameOn = result[2];
 
-																	 this.setState({
-																		 gameLive: true
-																	 });
+										 							 if(gameOn == true){ //game is active
 
-																	this.getData(result[0]).done(this.handleData.bind(this));
+																		 this.setState({
+																			 gameLive: true,
+																			 winner: result[0]
+																		 });
 
+																		this.getData(result[0]).done(this.handleData.bind(this));
+
+
+																	 }
+																	 else{
+																		 this.setState({
+																			 paid: true,
+																			 winner: result[0]
+																		 });
+																	 }
 
 																 }
-																 else{
-																	 //display message that game details will be revealed at 12
-																	 //alert("Game Details Published at 12 EST");
-																	 this.setState({
-																		 paid: true
-																	 });
-																 }
-
-															 });
+														 });
 
 
                                }
-                             else{
+
+                             else{ //there was a problem buying in
+
+
 
                                  console.error(error);
                                  var errorString = error.message.toString();
@@ -514,8 +536,9 @@ class QuizComponent extends Component {
                                    alert("Couldnt get accounts. Consider using the MetaMask chrome extension!");
                                  }
 																 else{
-
 																	 alert(errorString);
+
+
 																 }
                            }
                          });

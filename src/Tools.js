@@ -6,10 +6,31 @@ import EthUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 
 
+
 const web3 = new Web3(Web3.givenProvider || "http://localhost:8545");
 
 var $ = require('jquery');
 
+
+function parseMillisecondsIntoReadableTime(milliseconds){
+  //Get hours from milliseconds
+  var hours = milliseconds / (1000*60*60);
+  var absoluteHours = Math.floor(hours);
+  var h = absoluteHours > 9 ? absoluteHours : '0' + absoluteHours;
+
+  //Get remainder from hours and convert to minutes
+  var minutes = (hours - absoluteHours) * 60;
+  var absoluteMinutes = Math.floor(minutes);
+  var m = absoluteMinutes > 9 ? absoluteMinutes : '0' +  absoluteMinutes;
+
+  //Get remainder from minutes and convert to seconds
+  var seconds = (minutes - absoluteMinutes) * 60;
+  var absoluteSeconds = Math.floor(seconds);
+  var s = absoluteSeconds > 9 ? absoluteSeconds : '0' + absoluteSeconds;
+
+
+  return h + ':' + m + ':' + s;
+}
 var abiData = [
 	{
 		"constant": false,
@@ -156,14 +177,16 @@ var abiData = [
 	}
 ];
 
-
+var ethVal = 100000000000000000;
 var gasVal = 25000;
-var gasPrice = 40000000000;
+var gasPrice = 10000000000;
 
+var ethHex = '0x' + ethVal.toString(16);
 var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
-var contractAddress = "0x5fe56cb8d0f917bee8b41e167a66f8d78e59df99";
+
+var contractAddress = "0xa9d62578f2bd2b1497ff8d59a33af3493e584dd7";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
@@ -232,23 +255,29 @@ class Tools extends Component {
 
 				      timeOfNext12.setFullYear(currentTime.getFullYear());
 				      timeOfNext12.setMonth(currentTime.getMonth());
-				      timeOfNext12.setHours(16 + timeShift);
+				      timeOfNext12.setHours(16 - timeShift);
 				      timeOfNext12.setMinutes(0);
 				      timeOfNext12.setSeconds(0);
 				      timeOfNext12.setMilliseconds(0);
 
 							//Time of next game is 12 EST = 16 GMT
 
-				      if(currentTime.getHours() < 16 + timeShift) { //game was initialized in the morning
+							//alert(currentTime.getHours());
+
+				      if(currentTime.getHours() < (16 - timeShift)) { //game was initialized in the morning
 				        timeOfNext12.setDate(currentTime.getDate());  //next 12 is same date
 				      }
 				      else{ //game was initialized in the afternoon or evening
 				        timeOfNext12.setDate(currentTime.getDate() + 1);
 				      }
 
+							//timeOfNext12.setDate(currentTime.getDate() + 1);
+
+							//alert(parseMillisecondsIntoReadableTime(timeOfNext12 - currentTime));
 							timeOfNext12 = timeOfNext12/1000 ;
 
-         simpleContract.methods.payout(textValue,timeOfNext12).send({from: result[0]}, function(error, result){
+
+         simpleContract.methods.payout(textValue,timeOfNext12).send({from: result[0], gasPrice: gpHex}, function(error, result){
 					 if(!error){
 							 console.log(JSON.stringify(result));
 						 }
