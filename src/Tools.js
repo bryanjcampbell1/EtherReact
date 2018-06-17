@@ -40,7 +40,7 @@ var abiData = [
 				"type": "address"
 			}
 		],
-		"name": "addAnswer",
+		"name": "AddAnswer",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -58,7 +58,7 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "PauseGameAllowRefund",
+		"name": "Pause",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -94,7 +94,7 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
-		"name": "ResumeGameAfterRefund",
+		"name": "Resume",
 		"outputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -186,7 +186,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 
-var contractAddress = "0xa9d62578f2bd2b1497ff8d59a33af3493e584dd7";
+var contractAddress = "0x3e0b5bf0e2dec37f3a9af4bdba3b85e19a477243";
 
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
