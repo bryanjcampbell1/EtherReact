@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {  Well, Button } from 'react-bootstrap';
+import { Navbar, Nav, NavItem, Well, Button, FormGroup,ControlLabel,FormControl,HelpBlock } from 'react-bootstrap';
+import EthUtil from 'ethereumjs-util';
 import Web3 from 'web3';
 
 var $ = require('jquery');
@@ -169,6 +170,8 @@ var contractAddress = "0x3e0b5bf0e2dec37f3a9af4bdba3b85e19a477243";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
+//-------------------------Helper functions----------------------------//
+
 function parseMillisecondsIntoReadableTime(milliseconds){
   //Get hours from milliseconds
   var hours = milliseconds / (1000*60*60);
@@ -189,30 +192,81 @@ function parseMillisecondsIntoReadableTime(milliseconds){
   return h + ':' + m + ':' + s;
 }
 
-
-function QuizDisplay(props) {
-  const userHasInFactPaid = props.paid;
-	var gameIsOn = props.gameLive;
-	//gameIsOn = false;
-
-  if ((userHasInFactPaid == true) && (gameIsOn == true)) { //user has paid and game is live
-    return <div>
-            <Details win={props.winner} step1={props.step1} step2={props.step2} step3={props.step3} step4={props.step4} step5={props.step5} step6={props.step6} step7={props.step7} step8={props.step8} step9={props.step9} picturePath={props.picturePath}/>
-          </div>;
-  }
-	else if ((userHasInFactPaid == true) && (gameIsOn == false)) { //user has paid and game is not live
-    return <div>
-            <Registered />
-          </div>;
-  }
-  else { //user has not paid
-    return <div>
-            <Preview />
-          </div>;
-  }
-
+var hexToBytes = function(hex) {
+  for (var bytes = [], c = 0; c < hex.length; c+=2)
+  bytes.push(parseInt(hex.substr(c, 2), 16));
+  return bytes;
 }
 
+var privateKeyToAddress = function(privateKey) {
+  return `0x${EthUtil.privateToAddress(hexToBytes(privateKey)).toString('hex')}`
+}
+
+
+//-------------------------Components----------------------------//
+class QuizDisplay extends React.Component{
+
+	constructor(props, context) {
+      super(props, context);
+
+      this.handleChange = this.handleChange.bind(this);
+
+			//const userHasInFactPaid = props.paid;
+			//var gameIsOn = props.gameLive;
+
+      this.state = {
+        value: '',
+        private: '',
+        public: ''
+      };
+    }
+
+
+    handleChange(e) {
+      if (e.target.value != ""){
+      this.setState({
+                        value: e.target.value,
+                        private: web3.utils.sha3(e.target.value).substr(2),
+                        public: web3.utils.toChecksumAddress(privateKeyToAddress(web3.utils.sha3(e.target.value).substr(2)))
+
+                  });
+      }
+      else{
+        this.setState({
+          value: '',
+          private: '',
+          public: ''
+                    });
+      }
+    }
+render() {
+	  if ((this.props.paid == true) && (this.props.gameLive == true)) { //user has paid and game is live
+	    return <div>
+	            <Details win={this.props.winner} step1={this.props.step1} step2={this.props.step2} step3={this.props.step3} step4={this.props.step4} step5={this.props.step5} step6={this.props.step6} step7={this.props.step7} step8={this.props.step8} step9={this.props.step9} picturePath={this.props.picturePath}/>
+							<h5>Enter puzzle answer below. Private key will be generated using the SHA3 hash. Wallet address will be generated from private key. </h5>
+		          <form>
+		            <FormGroup controlId="formBasicText">
+		              <FormControl type="text" onChange={this.handleChange}/>
+		              <FormControl.Feedback />
+		            </FormGroup>
+		          </form>
+		          <h4> private key: {this.state.private}</h4>
+		          <h4>wallet address: {this.state.public}</h4>
+						</div>;
+	  }
+		else if ((this.props.paid == true) && (this.props.gameLive == false)) { //user has paid and game is not live
+	    return <div>
+	            <Registered />
+	          </div>;
+	  }
+	  else { //user has not paid
+	    return <div>
+	            <Preview />
+	          </div>;
+	  }
+
+	}
+}
 
 class Details extends React.Component {
   //const win = props.win;
