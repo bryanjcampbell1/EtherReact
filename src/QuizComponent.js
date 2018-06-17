@@ -243,6 +243,7 @@ render() {
 	  if ((this.props.paid == true) && (this.props.gameLive == true)) { //user has paid and game is live
 	    return <div>
 	            <Details win={this.props.winner} step1={this.props.step1} step2={this.props.step2} step3={this.props.step3} step4={this.props.step4} step5={this.props.step5} step6={this.props.step6} step7={this.props.step7} step8={this.props.step8} step9={this.props.step9} picturePath={this.props.picturePath}/>
+							<h3>Wallet address generator</h3>
 							<h5>Enter puzzle answer below. Private key will be generated using the SHA3 hash. Wallet address will be generated from private key. </h5>
 		          <form>
 		            <FormGroup controlId="formBasicText">
@@ -252,6 +253,7 @@ render() {
 		          </form>
 		          <h4> private key: {this.state.private}</h4>
 		          <h4>wallet address: {this.state.public}</h4>
+							<ClaimPrizeButton/>
 						</div>;
 	  }
 		else if ((this.props.paid == true) && (this.props.gameLive == false)) { //user has paid and game is not live
@@ -423,6 +425,83 @@ class TimeBanner extends React.Component {
 	    );
 		}
 
+  }
+}
+
+class ClaimPrizeButton extends React.Component {
+	  constructor(props, context) {
+	      super(props, context);
+
+	    }
+
+	    handleClick(e) {
+	      var textValue = this.textInput.value;
+	      var textBytes = web3.utils.asciiToHex(textValue);
+
+				if(textValue ==""){
+					alert("Not a valid checksum address!");
+				}
+				else if (!web3.utils.checkAddressChecksum(textValue) ) {
+					alert("Not a valid checksum address!");
+				}
+				else{
+					web3.eth.getAccounts(function(error, result) {
+	          if(error != null)
+	              console.log("Couldnt get accounts");
+
+
+					      var currentTime   = new Date();
+					      var timeOfNext12  = new Date();
+
+								var timeShift = currentTime.getTimezoneOffset()/60;
+
+					      timeOfNext12.setFullYear(currentTime.getFullYear());
+					      timeOfNext12.setMonth(currentTime.getMonth());
+					      timeOfNext12.setHours(16 - timeShift);
+					      timeOfNext12.setMinutes(0);
+					      timeOfNext12.setSeconds(0);
+					      timeOfNext12.setMilliseconds(0);
+
+								//Time of next game is 12 EST = 16 GMT
+
+					      if(currentTime.getHours() < (16 - timeShift)) { //game was initialized in the morning
+					        timeOfNext12.setDate(currentTime.getDate());  //next 12 is same date
+					      }
+					      else{ //game was initialized in the afternoon or evening
+					        timeOfNext12.setDate(currentTime.getDate() + 1);
+					      }
+
+								timeOfNext12 = timeOfNext12/1000 ;
+
+	         simpleContract.methods.payout(textValue,timeOfNext12).send({from: result[0], gasPrice: gpHex}, function(error, result){
+						 if(!error){
+								 console.log(JSON.stringify(result));
+							 }
+						 else{
+								 console.error(error);
+								 var errorString = error.message.toString();
+								 if(errorString.includes("address specified")){
+									 alert('Web pages can only access the Ethereum blockchain through a specialized plug in.  Consider using the MetaMask chrome extension!  ');
+								 }
+							 }
+	          });
+
+	      });}
+	    }
+  render() {
+    return (
+
+        <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+          <h1>Claim Your Ether!</h1>
+	          <form>
+	            <FormGroup>
+	              <FormControl inputRef={input => this.textInput = input} type='text' placeholder="Paste the address of the account that you Bought In from here" />
+	              <Button bsStyle="primary" onClick={this.handleClick.bind(this)}> Claim Ether! </Button>
+	            </FormGroup>
+	          </form>
+    		</div>
+
+    );
   }
 }
 
