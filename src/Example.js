@@ -65,7 +65,7 @@ class Example extends React.Component {
             <h3>Step 4: Get the Keys </h3>
             <h5>Click on the "Claim Prize" tab at the top of the page</h5>
             <h5>Paste your solution into the text field to derive the public and private keys </h5>
-            <Well style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+            <Well style={{ justifyContent: 'center', marginTop: 25}}>
               <img src={genKey} alt="genKey" style={{maxWidth: '95%'}}/>
             </Well>
             <h3>Step 5: Claim Your Ether! </h3>
