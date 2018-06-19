@@ -308,18 +308,6 @@ class Tools extends Component {
           <h4> private key: {this.state.private}</h4>
           <h4>wallet address: {this.state.public}</h4>
 
-          <h1>Claim Your Ether!</h1>
-          <h6>Check to make sure you are claiming Ether from within Winning Account</h6>
-          <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
-            <Well className="text-center" style={{width: '95%', }}>
-          <form>
-            <FormGroup>
-              <FormControl inputRef={input => this.textInput = input} type='text' placeholder="Paste the address of the account that you Bought In from here" />
-              <Button bsStyle="primary" onClick={this.handleClick.bind(this)}> Claim Ether! </Button>
-            </FormGroup>
-          </form>
-</Well>
-      </div>
 </div>
     );
   }

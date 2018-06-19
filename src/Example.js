@@ -5,7 +5,7 @@ import genKey from './generateKeys.png';
 import metaMask from './metamask.png';
 import win from './winningWallet.png';
 import impAcc from './importAccount.png';
-import claim from './claim.png';
+import claim from './claim2.png';
 
 class Example extends React.Component {
   render() {
@@ -70,12 +70,11 @@ class Example extends React.Component {
             </Well>
             <h3>Step 5: Claim Your Ether! </h3>
             <h5>Enter the Winning Wallet by selecting "import account" and using the private key derived in Step 3 </h5>
-            <Well className="text-center" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+            <Well className="text-center" style={{ justifyContent: 'center', marginTop: 25}}>
               <img src={impAcc} alt="impAcc" />
             </Well>
-            <h5>Enter your payout address and click the "Claim Ether!" button. </h5>
-            <h5>Make sure to use the same wallet address that you used when you registered for the game.</h5>
-            <Well className="text-center" style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
+            <h5>Click the "Claim Your Ether!" button. </h5>
+            <Well className="text-center" style={{ justifyContent: 'center', marginTop: 25}}>
               <img src={claim} alt="claim" style={{maxWidth: '95%'}}/>
             </Well>
             <h5>Funds will be distributed when the next block is mined. </h5>

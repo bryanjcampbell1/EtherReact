@@ -80,7 +80,7 @@ class Navigation extends React.Component{
           <Nav onSelect={this.handleSelect.bind(this)}>
             <NavItem eventKey={1}>Home</NavItem>
             <NavItem eventKey={2}>Example</NavItem>
-            <NavItem eventKey={3}>Claim Prize</NavItem>
+            <NavItem eventKey={3}>Tools</NavItem>
             </Nav>
           </Navbar.Collapse>
         </Navbar>
