@@ -149,6 +149,10 @@ var abiData = [
 			{
 				"name": "gameStartTime_",
 				"type": "uint256"
+			},
+			{
+				"name": "paused_",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -166,7 +170,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x3e0b5bf0e2dec37f3a9af4bdba3b85e19a477243";
+var contractAddress = "0xbb9d7fd467b29dd0690034383c034e7c3bb79098";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -550,6 +554,11 @@ class QuizComponent extends Component {
 						simpleContract.methods.loadPage(result[0]).call((error, result) => {
 
 							var gameOn = result[2];
+
+							if(result[4] == true)
+							{
+								alert("Game has been pased due to Quiz error.  Request refund using Remix or do nothing and automatically be registered for the next game!");
+							}
 
 							//initialize clock
 							var currentTime   = new Date();

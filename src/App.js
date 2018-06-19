@@ -143,6 +143,10 @@ var abiData = [
 			{
 				"name": "gameStartTime_",
 				"type": "uint256"
+			},
+			{
+				"name": "paused_",
+				"type": "bool"
 			}
 		],
 		"payable": false,
@@ -150,7 +154,7 @@ var abiData = [
 		"type": "function"
 	}
 ];
-var contractAddress = "0x3e0b5bf0e2dec37f3a9af4bdba3b85e19a477243";
+var contractAddress = "0xbb9d7fd467b29dd0690034383c034e7c3bb79098";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
