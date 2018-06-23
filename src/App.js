@@ -75,6 +75,15 @@ var abiData = [
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [],
+		"name": "TogglePrice",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -147,6 +156,10 @@ var abiData = [
 			{
 				"name": "paused_",
 				"type": "bool"
+			},
+			{
+				"name": "priceTier_",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -154,7 +167,7 @@ var abiData = [
 		"type": "function"
 	}
 ];
-var contractAddress = "0xbb9d7fd467b29dd0690034383c034e7c3bb79098";
+var contractAddress = "0x107f47b785cfb1e711c30936406828b827e84c19";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 

@@ -81,6 +81,15 @@ var abiData = [
 		"type": "function"
 	},
 	{
+		"constant": false,
+		"inputs": [],
+		"name": "TogglePrice",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
 		"inputs": [],
 		"payable": false,
 		"stateMutability": "nonpayable",
@@ -153,6 +162,10 @@ var abiData = [
 			{
 				"name": "paused_",
 				"type": "bool"
+			},
+			{
+				"name": "priceTier_",
+				"type": "uint256"
 			}
 		],
 		"payable": false,
@@ -170,7 +183,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0xbb9d7fd467b29dd0690034383c034e7c3bb79098";
+var contractAddress = "0x107f47b785cfb1e711c30936406828b827e84c19";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -285,7 +298,7 @@ render() {
 	  }
 	  else { //user has not paid
 	    return <div>
-	            <Preview />
+	            <Preview price={this.props.price}/>
 	          </div>;
 	  }
 
@@ -409,7 +422,7 @@ class Preview extends React.Component {
   render() {
     return (
       <div>
-				<p>Buy in and Get Puzzle Description By Clicking Above! Buy in is 0.1 ETH </p>
+				<p>Buy in and Get Puzzle Description By Clicking Above! Buy in is {this.props.price} ETH </p>
 				<p>Solve the puzzle first and win the Ether in the contract!</p>
 				<p>For more details check out the Example page and source code{"\n"} {"\n"}</p>
       </div>
@@ -559,6 +572,21 @@ class QuizComponent extends Component {
 							{
 								alert("Game has been pased due to Quiz error.  Request refund using Remix or do nothing and automatically be registered for the next game!");
 							}
+							if(result[5] == 1)
+							{
+								ethVal = 10000000000000000;
+							}
+							else if(result[5] == 2)
+							{
+								ethVal = 50000000000000000;
+							}
+							else{
+								ethVal = 100000000000000000;
+							}
+							ethHex = '0x' + ethVal.toString(16);
+							this.setState({
+								price: ethVal
+							});
 
 							//initialize clock
 							var currentTime   = new Date();
@@ -753,7 +781,7 @@ class QuizComponent extends Component {
           <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
           <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
 					<Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
-          <QuizDisplay winningAddress={this.state.winner} paidAddress={this.state.activeAccount} paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} picturePath={this.state.picturePath} />
+          <QuizDisplay price={this.state.price/1000000000000000000} winningAddress={this.state.winner} paidAddress={this.state.activeAccount} paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} picturePath={this.state.picturePath} />
         </Well>
         </div>
 

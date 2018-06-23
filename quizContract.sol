@@ -9,6 +9,8 @@ contract quizContract {
     bool puzzleError;
     bool paused;
 
+    uint priceTier;
+
     uint gameStartTime; //seconds since unix epoch
     uint  playerNumber;
     uint buyInAmount;
@@ -33,10 +35,11 @@ contract quizContract {
 //----------------------Functions----------------------------------//
 
     function quizContract() public{
+        priceTier = 1;
         paused = false;
         playerNumber = 0;
         gameNumber = 0;
-        buyInAmount = 100000000000000000; //Amount of Wei needed for buyIn
+        buyInAmount = 10000000000000000; //Amount of Wei needed for buyIn
 
         gameStartTime = now;
 
@@ -104,6 +107,25 @@ contract quizContract {
         paidPlayers.length = 0;
 
     }
+    function TogglePrice() public {
+        require(msg.sender == authorAddress);
+
+        priceTier = priceTier + 1;
+        if(priceTier == 4){
+            priceTier = 1;
+        }
+
+        if(priceTier == 1){
+            buyInAmount = 10000000000000000; //set price low
+        }
+        else if(priceTier == 2){
+            buyInAmount = 50000000000000000; //set price medium
+        }
+        else{
+            buyInAmount = 100000000000000000; //set price high
+        }
+    }
+
 
     function AddAnswer(address answer) public {
       //used so single contract can be updated with more than 1 answer
@@ -143,10 +165,14 @@ contract quizContract {
         paidPlayers.length = 0;
         gameStartTime = next12;
 
+        if(priceTier == 1){
+            gameStartTime = now + 4 hours;
+        }
+
     }
 
     //Get data
-    function loadPage(address userAddress) public view returns (address winnerAddress_, bool paid_, bool gameOn_, uint gameStartTime_, bool paused_)
+    function loadPage(address userAddress) public view returns (address winnerAddress_, bool paid_, bool gameOn_, uint gameStartTime_, bool paused_, uint priceTier_)
     {
 
         bool paid = false;
@@ -168,7 +194,7 @@ contract quizContract {
         gameOn_ = gameActive ;
         gameStartTime_ = gameStartTime;
         paused_ = paused;
-
+        priceTier_ = priceTier;
     }
 
 }
