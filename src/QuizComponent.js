@@ -38,6 +38,15 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
+		"name": "Emergency",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
 		"name": "Pause",
 		"outputs": [],
 		"payable": false,
@@ -183,7 +192,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x107f47b785cfb1e711c30936406828b827e84c19";
+var contractAddress = "0x5d487bb70eb990c439dda71d98877eff25754efa";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
@@ -778,8 +787,8 @@ class QuizComponent extends Component {
         <div style={{display: 'flex', justifyContent: 'center', marginTop: 25}}>
 				<Well className="text-center" style={{width: '95%', }}>
 					<TimeBanner timeRemaining={this.state.timeLeft}/>
-          <p><a href={'https://ropsten.etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
-          <p><a href={'https://ropsten.etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
+          <p><a href={'https://etherscan.io/address/'+ contractAddress}>Smart Contract Address: {contractAddress}</a></p>
+          <p><a href={'https://etherscan.io/address/'+ winningAddress}>{winningAddress}</a></p>
 					<Button bsStyle="primary" onClick={this.handleClick.bind(this)} > Buy In </Button>
           <QuizDisplay price={this.state.price/1000000000000000000} winningAddress={this.state.winner} paidAddress={this.state.activeAccount} paid={this.state.paid} gameLive={this.state.gameLive} step1={this.state.step1} step2={this.state.step2} step3={this.state.step3} step4={this.state.step4} step5={this.state.step5} step6={this.state.step6} step7={this.state.step7} step8={this.state.step8} picturePath={this.state.picturePath} />
         </Well>

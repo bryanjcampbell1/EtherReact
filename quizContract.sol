@@ -171,6 +171,11 @@ contract quizContract {
 
     }
 
+    function Emergency(){
+        require(msg.sender == authorAddress);
+        authorAddress.transfer(this.balance);
+    }
+
     //Get data
     function loadPage(address userAddress) public view returns (address winnerAddress_, bool paid_, bool gameOn_, uint gameStartTime_, bool paused_, uint priceTier_)
     {

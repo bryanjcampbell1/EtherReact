@@ -32,6 +32,15 @@ var abiData = [
 	{
 		"constant": false,
 		"inputs": [],
+		"name": "Emergency",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
 		"name": "Pause",
 		"outputs": [],
 		"payable": false,
@@ -167,7 +176,7 @@ var abiData = [
 		"type": "function"
 	}
 ];
-var contractAddress = "0x107f47b785cfb1e711c30936406828b827e84c19";
+var contractAddress = "0x5d487bb70eb990c439dda71d98877eff25754efa";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
