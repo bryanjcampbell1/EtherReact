@@ -192,7 +192,7 @@ var gasHex = '0x' + gasVal.toString(16);
 var gpHex = '0x' + gasPrice.toString(16);
 
 //contract address is hard coded --> doesnt have to be read in by state
-var contractAddress = "0x5d487bb70eb990c439dda71d98877eff25754efa";
+var contractAddress = "0xe8707b70e702261077cc1418bc3a2be57e9d61d7";
 var simpleContract = new web3.eth.Contract(abiData);
 simpleContract.options.address = contractAddress;
 
